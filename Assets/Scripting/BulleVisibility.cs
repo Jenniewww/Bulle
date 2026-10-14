@@ -14,7 +14,7 @@ public class BulleVisibility : MonoBehaviour
 
     void OnEnable()
     {
-        aButton.action?.Enable();
+        aButton.action?.Enable(); //hello
     }
 
     void Update()

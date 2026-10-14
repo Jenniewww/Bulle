@@ -95,7 +95,7 @@ public class BulleDeformer : MonoBehaviour
 
     void CreatePoints()
     {
-        // 空间均匀采样：优先选择距离已有点较远的顶点
+        // 空间均匀采样：优先选择距离已有点较远的顶点 répartition des points dans l'environnement au hasard
         List<int> candidates = new();
 
         // 限制候选数量，避免过多距离计算
