@@ -1,72 +1,34 @@
 
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 public class BulleVisibility : MonoBehaviour
 {
-    [Header("Bulle Renderer")]
-    public Renderer bulleRenderer;
+    [Header("Target")]
+    public BulleDeformer bulleDeformer;
 
-    private InputDevice rightController;
-    private bool wasPressed = false;
+    [Header("Quest Right Controller A Button")]
+    public InputActionProperty aButton;
 
-    void Start()
+    private bool visible = true;
+
+    void OnEnable()
     {
-        if (bulleRenderer == null)
-            bulleRenderer = GetComponent<Renderer>();
-
-        FindController();
-    }
-
-    void FindController()
-    {
-        var devices = new List<InputDevice>();
-
-        InputDevices.GetDevicesWithCharacteristics(
-            InputDeviceCharacteristics.Right |
-            InputDeviceCharacteristics.Controller,
-            devices
-        );
-
-        if (devices.Count > 0)
-            rightController = devices[0];
+        aButton.action?.Enable();
     }
 
     void Update()
     {
-        if (!rightController.isValid)
-        {
-            wasPressed = false;
-            FindController();
-            return;
-        }
-
-        bool pressed = false;
-
-        if (rightController.TryGetFeatureValue(
-            CommonUsages.primaryButton,
-            out pressed))
-        {
-            // Only toggle once per button press
-            if (pressed && !wasPressed)
-            {
-                ToggleBulle();
-            }
-
-            wasPressed = pressed;
-        }
-    }
-
-    void ToggleBulle()
-    {
-        if (bulleRenderer == null)
+        if (bulleDeformer == null ||
+            aButton.action == null)
             return;
 
-        bulleRenderer.enabled = !bulleRenderer.enabled;
+        if (aButton.action.WasPressedThisFrame())
+        {
+            visible = !visible;
+            bulleDeformer.SetBulleVisible(visible);
 
-        Debug.Log(
-            "Bulle visible: " + bulleRenderer.enabled
-        );
+            Debug.Log("Bulle visible: " + visible);
+        }
     }
 }
