@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c325ab8dbb4599a9b4f7ba03306e28, type: 3}
+  m_Name: FusionStatisticsDefaultConfig
+  m_EditorClassIdentifier: 
+  BackgroundOpacity: 0.9
+  PageRefreshRate: 30
+  DefaultGradient:
+    serializedVersion: 2
+    key0: {r: 0.2, g: 1, b: 0.2, a: 1}
+    key1: {r: 0.2, g: 0.2, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  ThresholdGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 0.2, a: 1}
+    key1: {r: 1, g: 0.2, b: 0.2, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  RenderZeroAsTransparent: 1
+  DontDisplayZeroOnLastValue: 1
+  StatisticsPages:
+  - {fileID: 6868091177607500306, guid: 96d0db92ca5d2f74292df89293b3f6b9, type: 3}
+  - {fileID: 5693202869558844344, guid: f1d1c39e77165064eab207591c6c3c02, type: 3}
+  - {fileID: 596129192306691987, guid: f957caf07a2db6c42a47af8afe519d8f, type: 3}
+  - {fileID: 1002655159323603851, guid: 33830becefc00494db1fe55a77f63f62, type: 3}
+  - {fileID: 3810632764899209979, guid: acaa8fae13d2a8f499f4348abea57706, type: 3}
+  - {fileID: 6258643960108214118, guid: dc296ca951e905046b3a3091e4f5daac, type: 3}
+  - {fileID: 7162082265430495368, guid: a1e670b12d157a24591e964a6da5f435, type: 3}

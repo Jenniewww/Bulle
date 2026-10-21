@@ -3,39 +3,69 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.XR.OpenXR.Features.Meta;
 
 public class AnchorSupportCheck : MonoBehaviour
 {
-    IEnumerator Start()
+    [SerializeField] private ARAnchorManager anchorManager;
+
+    private IEnumerator Start()
     {
-        // 等待 AR Session 初始化
-        yield return new WaitForSeconds(3f);
+        Debug.Log("[SSA] Starting Shared Spatial Anchors check...");
 
-        Debug.Log("[AnchorTest] AR Session state: " + ARSession.state);
+        if (anchorManager == null)
+            anchorManager = GetComponent<ARAnchorManager>();
 
-        var manager = GetComponent<ARAnchorManager>();
-
-        if (manager == null)
+        if (anchorManager == null)
         {
-            Debug.LogError("[AnchorTest] ARAnchorManager not found.");
+            Debug.LogError("[SSA] ARAnchorManager not found!");
             yield break;
         }
 
-        var subsystem = manager.subsystem;
+        // Wait for XR and AR Session initialization.
+        yield return new WaitForSeconds(5f);
 
-        if (subsystem == null)
+        Debug.Log("[SSA] AR Session state: " + ARSession.state);
+
+        // Retry because the subsystem may initialize later.
+        for (int attempt = 1; attempt <= 10; attempt++)
         {
+            XRAnchorSubsystem subsystem = anchorManager.subsystem;
+
+            if (subsystem != null && subsystem.running)
+            {
+                Debug.Log("[SSA] XRAnchorSubsystem is RUNNING!");
+
+                MetaOpenXRAnchorSubsystem metaSubsystem =
+                    subsystem as MetaOpenXRAnchorSubsystem;
+
+                if (metaSubsystem != null)
+                {
+                    Debug.Log(
+                        "[SSA] Shared Anchors support: " +
+                        metaSubsystem.isSharedAnchorsSupported
+                    );
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        "[SSA] Anchor subsystem is not MetaOpenXRAnchorSubsystem."
+                    );
+                }
+
+                yield break;
+            }
+
             Debug.LogWarning(
-                "[AnchorTest] No XRAnchorSubsystem available. " +
-                "Current runtime may not support AR anchors."
+                "[SSA] Attempt " + attempt +
+                "/10: XRAnchorSubsystem not running."
             );
-            yield break;
+
+            yield return new WaitForSeconds(2f);
         }
 
-        Debug.Log("[AnchorTest] XRAnchorSubsystem is running: "
-                  + subsystem.running);
-
-        Debug.Log("[AnchorTest] Provider: "
-                  + subsystem.subsystemDescriptor.id);
+        Debug.LogError(
+            "[SSA] FAILED: No running XRAnchorSubsystem after retries."
+        );
     }
 }

@@ -1,0 +1,679 @@
+# 2.1.3
+
+## Stable
+
+### Build 2390 (Sep 17, 2026)
+
+**What's New**
+
+- Added `Networkrunner.CommittedPlayers`, which lists only players both fully in the room and the Fusion session
+- Added a new option `NetworkProjectConfig.ClientsOnlyRollbackUpdatedObjects`. When enabled, clients will skip rolling back and resimulating objects that haven't received new state since the previous rollback
+- NetworkRunner now exposes BatchRequestStateAuthority and BatchReleaseStateAuthority, allowing for request or release of state authority for up to 16 NetworkObjects in a single all-or-nothing call instead of one call per object
+- Developers can now choose the deadzone velocity behaviour of the forecast physics system in the NetworkTransform inspector. Local Physics - the 2.1 default uses purely local physics when inside the deadzone, Match Target - new behaviour that makes the object track the velocity of the extrapolated remote snapshot
+
+**Changes**
+
+- Update to Photon Realtime SDK to 5.1.20
+- Fusion no longer needs `com.unity.ugui` package. Removing it disables menu and statistics features, though
+- Cache completed Task<bool> in Fusion's polling services
+- RequestStateAuthority now returns false locally on a MasterClientObject with AllowStateAuthorityOverride instead of sending a message that will always be rejected
+- Obsoleted `DebugWarn` and `DebugError` log methods
+- Increased the max loaded scene count from 8 to 31
+- [Weaver] "Assembly ... (full path: ...) already referenced" message is now only visible if `FUSION_WEAVER_DEBUG` is defined
+
+**Bug Fixes**
+
+- Fixed: Connection-slot leak behind ServerFull
+- Fixed: TaskManager.Delay precision loss on long-running WebGL builds
+- Fixed: An Exception that was thrown if a derived SimulationBehaviour had an overload of FixedUpdateNetwork/Render or PreRender
+- Fixed: NetworkTransform removes the forced proxy kinematic override on despawn and on spawn
+- Fixed: Scripting defines could become mismatched across build targets leading to builds with incorrect defines or potentially compile errors depending on usage
+- Fixed: NetworkTransform with physics Forecast disabled now re-evaluates the proxy kinematic Rigidbody override when State Authority is transferred (and whenever IsInSimulation changes); previously it was only applied at spawn
+- Fixed: Got rid of double initial import of `NetworkProjectConfig` and `FusionWeaverTrigger`
+- Fixed: [Networked] string Capacity is now the number of characters - the length and hash header words no longer eat into it (Capacity(30) held only 28 characters, Capacity(1) threw IndexOutOfRangeException)
+- Fixed: '= default' and '= new()' initializers for `[Networked]` collections no longer result in runtime IL error
+- Fixed: Invalid IL code errors when using Odin's `UnitySerializationUtility` for `NetworkBehaviours`
+- Fixed: Guard scene baking against unloaded scenes
+- Fixed: [MPPM] `NetworkProjectConfig.Global` throwing "Failed to load NetworkProjectConfigAsset" in some use cases
+
+# 2.1.2
+
+## Stable
+
+### Build 2279 (Aug 13, 2026)
+
+**What's New**
+
+- New LagCompensation trace channel
+- Add the ability to adjust the Client/Server max packets per send limits, these are settable on the NetworkProjectConfig from code only and only effect the server sends. See NetworkProjectConfig.Network.GameChannelSendCount and NetworkProjectConfig.Network.GameReliableChannelSendCount
+
+**Changes**
+
+- Update to Photon Realtime SDK to 5.1.18
+- Improve documentation for `NetworkRunner.GetPlayerRtt` and `NetworkRunner.GetRttToPhotonCloud`
+- When receiving a NetworkObject spawn change some Asserts to Assert.Always to avoid memory corruption in release builds
+- HitboxManager will auto-destroy if lag compensation is not enabled on NetworkProjectConfig
+- Caching HitboxManager reference
+
+**Bug Fixes**
+
+- Fixed: Network conditions now working again
+- Fixed: Remove incorrect Assert.Check(tick >= sc._latestTickAcknowledged), which could fire if a time reset occured or on extreme packet loss
+- Fixed: Non-Forecasted rigidbodies with interpolation turned on incorrect spawn at 0,0,0
+- Fixed: `NetworkSceneManagerDefault` not ignoring scene `NetworkObjects` that have not been baked, e.g. on-scene pools
+- Fixed: An issue where locally predicted objects could get the wrong snapshot pair from `NetworkBehaviour.TryGetSnapshotBuffers` in very low latency conditions (such as multi-peer mode)
+- Fixed: Prevent NRE if the network state has not yet arrived for a Forecast transform
+- Fixed: Moving NetworkProjectConfig sometimes caused a new NetworkProjectConfig to be created at the default path
+- Fixed: Wrong reconnecting flag on CloudConnectionLost when moving the another Session
+
+# 2.1.1
+
+## Stable
+
+### Build 2177 (Jun 30, 2026)
+
+**Changes**
+
+- Move from Release Candidate to Stable
+
+## Release-Candidate
+
+### Build 2174 (Jun 30, 2026)
+
+**Breaking Changes**
+
+- NetworkObject.SendPriority and NetworkObject.SendPriorityCallback are now obsolete, please use NetworkObject.SetPriority(player, priority) instead
+
+**Changes**
+
+- Update to Photon Realtime SDK to 5.1.16
+- SetPriority can now also be used on a Host, previously only usable on a dedicated server or in Shared mode. Set/ClearPriority were also both updated to return a result indicating if it was called from an effective context, it asserts in DEBUG builds when it isn't used correctly
+
+**Bug Fixes**
+
+- Fixed: Plugin not respecting the configured SendRate when taking into account Priority
+- Fixed: Shaders render as magenta for the intro sample with Unity 6.5 and URP
+
+### Build 2159 (Jun 25, 2026)
+
+**What's New**
+
+- `SimulationBehaviour.IsValid` : convenient syntactic sugar for `Object != null && Object.IsValid` in a `Behaviour`
+- `NetworkRunner.DebugRpcEvent` - a static delegate that allows to track each local/incoming RPC execution
+
+**Changes**
+
+- JsonUtilityExtensions.InstanceIDHandlerDelegate now uses `EntityId` for Unity 6000.3+
+
+**Bug Fixes**
+
+- Fixed: SDK compilation and compatibility with Unity 6000.5
+
+### Build 2148 (Jun 23, 2026)
+
+**Changes**
+
+- `NetworkBehaviour.Ptr` is now public but obsolete (with error); this is to work around a bug with mono code stripping. Do not use this field directly
+- `NetworkBehaviours` that do not add new fields do not need to be weaved
+- Generic `INetworkStructs` and `INetworkInputs` now result in weave-time error rather than runtime error
+
+**Bug Fixes**
+
+- Fixed: EditorHub package install progress bar freezing at "Importing assets"
+
+### Build 2138 (Jun 19, 2026)
+
+**What's New**
+
+- `PluginAssetExportSettingsAttribute` - automatically exports assets deriving from attributed type to plugin sdk
+
+**Changes**
+
+- Update to Photon Realtime SDK to 5.1.15
+- Improved support for Fast Enter Play Mode (Disable Domain Reload)
+
+**Bug Fixes**
+
+- Fixed: Correctly remap UnityEngine type constraints to equivalents when running a plugin export
+- Fixed: `ScriptableObjects` marked with PluginCodeExportSettingsAttribute now get their base type set to `Fusion.ScriptableObject`, if they derive straight from `UnityEngine.ScriptableObject`
+- Fixed: Client time trace now writes out csv file using invariant culture - this stops commas in floats breaking csv formatting
+- Fixed: `ResetClientSimulationState` now also resets `_sendTick`
+- Fixed: Client sent packets getting stamped with the wrong tick number when using input delay
+
+### Build 2127 (Jun 17, 2026)
+
+**What's New**
+
+- AssetBundle code now automatically compiles out when the AssetBundle module isn't present - no manual opt-out needed
+
+### Build 2110 (Jun 09, 2026)
+
+**What's New**
+
+- Optimise state replication by skipping loops where a `NetworkObject` has no state
+- NanoSockets for Windows ARM64
+
+### Build 2099 (Jun 05, 2026)
+
+**What's New**
+
+- Optimize various hotpath copies by switching from Span to pointer functions
+
+**Bug Fixes**
+
+- Fixed: Generic classes deriving from NetworkBehaviour with `[Networked]` variables and `[OnChangedRender()]` caused a crash
+
+### Build 2090 (Jun 02, 2026)
+
+**What's New**
+
+- Replication optimisation by improving memory copy and reducing it's startup overhead
+- Optimisation by detecting network objects with no network state and early skipping snapshot handling for these
+- On-demand update of interpolation state (optimisation)
+- `NetworkObject.EnableInterpolation` which defaults to true, as this is the previous behaviour. Interpolation may be disabled, so that only the latest data is stored. This increases performance and reduces memory usage
+- Add CopyBlock() and CopyBlockUnaligned which take refs instead of pointers
+
+**Bug Fixes**
+
+- Fixed: Make internal functions safe for moving GC
+
+### Build 2054 (May 20, 2026)
+
+**What's New**
+
+- Replication optimisation by hoisting constant calculation out of loops
+- Replication optimisation to avoid calling the base class `Render()`, `PreRender()` and `FixedUpdateNetwork()` functions if they are not overridden
+
+**Bug Fixes**
+
+- Fixed: Fusion Intro Demo late joiners were not updating objects color when joinning the session
+
+### Build 2037 (May 13, 2026)
+
+**What's New**
+
+- Interactive inspector icons for networked property, will be disabled if Odin is used
+
+## Preview
+
+### Build 2018 (May 07, 2026)
+
+**Breaking Changes**
+
+- CustomForecastDelegate params updated so that ticksToExtrapolate is calculated externally and passed in, to avoid unnecessary boiler-plate code
+
+**Changes**
+
+- Fusion Intro now programmatically switches between new and legacy input systems
+
+### Build 1996 (May 05, 2026)
+
+**Bug Fixes**
+
+- Fixed: Align _inputTick with resumed sim tick on host migration
+- Fixed: DestroyWhenStateAuthorityLeaves prefab flag is now independent from the AllowStateAuthorityOverride
+
+### Build 1981 (Apr 30, 2026)
+
+**What's New**
+
+- Adds a new `NetworkRunner` property, `InputTick`, that returns the tick of the most recent input collected (or the input being collected, if read in `OnInput`). The input delay implementation changed the timing of `OnInput` within the frame, so `OnInput` can no longer interpret `Runner.Tick` as "the tick this input is for". `Runner.InputTick` should be used instead
+
+**Bug Fixes**
+
+- Fixed: An issue where the user's configured input delay wasn't applied to the host's simulation
+- Fixed: Odin Inspector's [ShowInInspector] fields no longer show in Inspector for NetworkBehaviours
+- Fixed: Issue when teleporting during forecast would return to undesirable position
+- Fixed: Revert delayed GameObject Spawn as it caused issues with OnChangedRender, see `NetworkObject.IsRenderInterpolationReady` for new API that allows GameObjects to be hidden between spawn and render interpolation
+- Fixed: RPCs from generic base classes resulting in "Target behaviour is not of the correct type" errors
+- Fixed: Editor compile error around GUID in Unity 6000.4
+- Fixed: Crash in mono release builds when an exception is thrown in a specific block of code
+
+### Build 1965 (Apr 27, 2026)
+
+**Breaking Changes**
+
+- Update protocol for greater reliability with Custom Plugins, update to this SDK or newer is required
+
+**What's New**
+
+- `NetworkSpawnStatus.FailedSimulationNotRunning`
+
+**Bug Fixes**
+
+- Fixed: DisableNATPunchthrough causing invalid connections
+- Fixed: Spawn position of the built-in NetworkCharacterController on proxies has been fixed
+
+# 2.1.0
+
+## Preview
+
+### Build 1937 (Apr 20, 2026)
+
+**What's New**
+
+- Interactive inspector icons for networked property
+
+**Changes**
+
+- Update to Photon Realtime SDK to 5.1.12
+
+**Bug Fixes**
+
+- Fixed: GetPlayerObject & GetPlayerUserId Exception for Rejoined Players in Shared Mode
+
+### Build 1901 (Apr 01, 2026)
+
+**What's New**
+
+- `NetworkProjectConfig.InvokeRenderMode`, replaces old `NetworkProjectConfig.InvokeRenderInBatchMode` and can now also disable `Render` for more use cases
+- `Tools/Fusion/Plugin` submenu. Items are only active if there's a global asset of `FusionPluginProjectSettings` asset
+- PluginCodeExportSettingsAttribute
+- HasCustomLogicUser override for custom plugin presence detection
+- Plugin export callbacks
+- `NetworkRunner.Spawn` overloads accepting a prefab name or path
+
+**Changes**
+
+- `NetworkProjectConfig.InvokeRenderInBatchMode` is now obsolete
+- Children NetworkObjects with a different state authority than the parent object are now separated from the hierarchy when the parent is despawned
+
+**Bug Fixes**
+
+- Fixed: [Weaver] Error when using a nested type in a generic base class across assembly boundary
+- Fixed: Improve the stability of NetworkObjects when a race condition occurs between despawning message and a state authority request
+- Fixed: Prefabs were not sorted with ordinal comparer
+- Fixed: Remove incorrect error log: "not implemented atm"
+
+### Build 1844 (Mar 12, 2026)
+
+**What's New**
+
+- `NetworkRunner.Spawn` overloads accepting a prefab name or path
+- One time callbacks are now not only invoked on NetworkBehaviours implementing interefaces but also classes deriving from NetworkObjects. Supported callbacks on NetworkObject are:  ISimulationEnter, ISimulationExit, ILocalPrefabCreated, IRemotePrefabCreated, IAfterSpawned, IInputAutthorityGained, IInputAuthorityLost, IStateAuthorityChanged, IInterestEnter, IInterestExit
+
+**Bug Fixes**
+
+- Fixed: Collections in `INetworkStructs` not using correct drawers
+- Fixed: Local-space values could end up in forecaster during kinematic->non-kinematic transition
+
+### Build 1826 (Mar 05, 2026)
+
+**Bug Fixes**
+
+- Fixed: Forecast Physics Kinematic Toggling Can Fail In Client Server
+- Fixed: PropertyReader now correctly supports Ptr and Ref NetworkProperties
+
+### Build 1775 (Feb 20, 2026)
+
+**Bug Fixes**
+
+- Fixed: Enabling a NetworkTransform at a later point after the initial spawn will no longer reset its transform to (0,0,0)
+
+### Build 1762 (Feb 16, 2026)
+
+**Breaking Changes**
+
+- Rename PlayerRef.MasterClient to PlayerRef.InternalMasterClientIdentifier and PlayerRef.IsMasterClient to PlayerRef.IsInternalMasterClientIdentifier
+
+**What's New**
+
+- NetworkRunner.GetMasterClient
+- Lines and thresholds on multiline graphs can be disabled via clicking legend item
+
+**Bug Fixes**
+
+- Fixed: Warning CS1574 generated for `PlayerRef.InternalMasterClientIdentifier`; ignored with #pragma, can't see a better approach atm
+- Fixed: Improved error handling in `FusionCoroutine`
+- Fixed: Inconsistent `NetworkId` between clients in long-running sessions
+
+### Build 1717 (Feb 05, 2026)
+
+**What's New**
+
+- Forecased Object Statistics Page; useful for debugging forecasted  
+objects
+- Statistics pane can now make use of multiline graphs, which support 4 lines and 4 thresholds
+- Added support for input delay in client-server mode. The associated settings are under the network project config and can be configured in the Unity inspector. Input delay is off by default
+
+### Build 1700 (Jan 29, 2026)
+
+**What's New**
+
+- [Forecast] Impactful collisions can now be filtered by adjusting MinImpactfulCollisionAlignment in the inspector
+
+**Bug Fixes**
+
+- Fixed: Inaccessible PathUtils
+
+### Build 1683 (Jan 27, 2026)
+
+**What's New**
+
+- Add ability for user to supply a custom error detection heuristic
+
+**Changes**
+
+- Changes to state or input authority trigger interest callbacks when applicable
+
+**Bug Fixes**
+
+- Fixed: If using interest management, clients can now request state authority in shared mode for objects that are not replicated on the local simulation via the NetworkRunner API
+
+### Build 1653 (Jan 20, 2026)
+
+**What's New**
+
+- LogLimits Tests to Automated Category
+- Auto button to NetworkTransform Inspector that automatically calibrates the HighErrorSimilarity Threshold
+
+### Build 1627 (Jan 09, 2026)
+
+**What's New**
+
+- `NetworkObject` prefabs that are a part of asset bundles are now recognized and loaded accordingly. To disable this behaviour, add `FUSION_DISABLE_ASSET_BUNDLE_ASSET_SOURCE` define
+
+**Changes**
+
+- Change DEFAULT_MAX_LATE_INPUTS_PERCENTILE from 5 to 1. This is slightly less conservative and will move client time closer to server time at the cost of a slightly greater risk of an input drop
+- Expose `TimeSyncConfiguration` in `NetworkProjectConfig` in the Unity inspector. We continue to recommend you use the defaults
+
+**Bug Fixes**
+
+- Fixed: NetworkBehaviourBufferInterpolators and PluginAuthority attribute detection code now correctly discovers private Networked properties in base classes
+- Fixed: Occasional packet drop when dealing with large packets and missing fragments
+- Fixed: VariableFeedback logic did not properly cache the last sample, which would result in an incorrect d term in the pid logic
+- Fixed: ConnectionToken null on Single Player Mode
+
+### Build 1588 (Dec 15, 2025)
+
+**Changes**
+
+- Move `tickDifference < 0` warning to the LogTraceForecast channel
+
+**Bug Fixes**
+
+- Fixed: When Forecast is disabled we still need to disable interpolation if we have a physical object
+- Fixed: If we are StateAuthority we should not sync our Kinematic flag from the network
+
+### Build 1572 (Dec 09, 2025)
+
+**Breaking Changes**
+
+- Changing the internals of Fusion Statistics. Refer to the documentation for instructions on how to use and collect data
+
+**What's New**
+
+- Hardened Server Robustness. Now, servers can automatically switch to a new session if they fail to reconnect to the current one. This extends the Session Quick Reconnect feature
+- NetworkRunner.CloudConnectionLostMode is used to set up the Cloud Connection Lost feature Mode
+
+**Changes**
+
+- Improve tickDifference warning logs
+- Improving Fusion Statistics display
+
+### Build 1543 (Dec 04, 2025)
+
+**What's New**
+
+- `NetworkTransform.TriggerLocalOverridesExtrapolated()`  On a proxy, collisions cause the local physics to be favoured over the remote extrapolation. This triggers that effect manually, which can be useful for sudden actions e.g. proxy prediction of e.g. jumps
+
+**Changes**
+
+- Move Forecast sleeping with non-zero velocity warnings to the Forecast trace channel
+
+**Bug Fixes**
+
+- Fixed: Correct key indexing in input type lookup, fixes issue where GetInputs would not return false when no INetworkInput was set
+
+### Build 1521 (Dec 02, 2025)
+
+**Changes**
+
+- Improve compatibility with older (V1) baked prefabs
+- Never deliver RPCs on resim ticks, only on forward ticks. This enables sending a reply RPC within the context of the the received RPC
+
+### Build 1513 (Nov 27, 2025)
+
+**What's New**
+
+- PhysicsBody access on NetworkTransform
+- Assembly Tags to mark builds as Preview or Stable
+- Warning log when running Preview builds
+- NetworkRunner.BuildStage, which returns the Build Stage (Preview/Stable)
+
+**Changes**
+
+- `NetworkObjectFlags.GetVersion` extension method returns `NetworkObjectFlags` now (was: int)
+- Prefabs baked with V1 flags version are still valid and do not cause a runtime error
+- If a prefab can't be baked due to being in a read-only location but it still has valid flags, no error is raised
+- Allow time synchronization settings to be overriden in Shared Mode, achievable via NetworkProjectConfig.TimeSynchronizationOverride
+- Improve NetworkObjectFlags documentation
+- Priority is now SendPriority, for clarity
+- Make the underlying `RigidBody(2D)` accessible from AbstractPhysicsBody. Add AngularDrag access
+- Update to Photon Realtime SDK to 5.1.9
+
+**Bug Fixes**
+
+- Fixed: In Shared Mode stop marking snapshots with the received servers tick, instead use the latest changed tick for the given object. This stops a tick mismatch between the render Timeline and the snapshots returned from NetworkBehaviour.TryGetSnapshotsBuffers
+- Fixed: When having send rate set to 4 times a second ensure the timeline idle detection code does not execute
+- Fixed: Stop interpolation jumping object momentarily to wrong location when using Forecast and switching Kinematic on and off
+- Fixed: CanInterpolate now always interpolates when Forecasting is disabled as well as for State Authorities when kinematic is enabled
+- Fixed: `NetworkObjectBaker` incorrectly detecting the main `NetworkTransform` if there was a `NetworkTransform` in a child `GameObject` without a `NetworkObject`
+- Fixed: StateAuthority changes to rigidbody interpolation were not being correctly mirrored on other clients
+- Fixed: NetworkTRSP is now abstract, as documented
+- Fixed: Connection fallback to Relay timing out after the first handshake
+
+### Build 1460 (Nov 12, 2025)
+
+**What's New**
+
+- Physics, FSM and Interest Management addon to hub
+- `NetworkedAttribute.AllowPrediction` - if set to `false`, only state authority can write to the property; writes from input authority and proxies are ignored (value will not be changed)
+- `NetworkObjectTypeId.FromPrefabNestedObject` and `NesteorkObjectTypeId.IsPrefabNestedObject`
+
+**Changes**
+
+- NetworkBehaviourBufferInterpolator provides explicit functions for NetworkBool and obsoleted explicit .bool functions with a warning to discourage use of bool in Networked Properties
+- [SharedMode] Plugin can invoke and send any Rpc and is not limited by `Sources`
+- `NetworkObjectReleaseContext.IsNestedObject` made obsolete
+- Nested objects no longer have their type set to invalid
+
+**Bug Fixes**
+
+- Fixed: Connection fallback to Relay timing out after the first handshake
+- Fixed: Fusion Intro link in the Hub advanced documentation
+- Fixed: The State Authority having state overwritten if it changed state immediately upon gaining State Authority, particularly with high ping
+- Fixed: Lag compensation internal AABB constructor fix assignment order
+- Fixed: NetworkRunner.GetAvailableRegions always throws a `OperationStartException: Must be inside a room`
+- Fixed: `MissingMethodException` raised in Unity 6000.3 beta
+- Fixed: Unity 6000.3 beta obsolete warnings in `NetworkProjectConfigImporter`
+- Fixed: [Plugin] `[Rpc, PreserveInPlugin]` combination resulting in errors being logged
+- Fixed: `FusionPluginNetworkTypesExporter` not exporting `INetworkInput` types
+- Fixed: State auth request handling did not update auth lists; fixed that
+- Fixed: `NetworkTransform` area of interest override was being overwritten internally
+- Fixed: Warnings due to usage of `Fusion.Native` in the weaver
+
+## Nightly
+
+### Build 1390 (Oct 14, 2025)
+
+**What's New**
+
+- Tick and send rates for Shared Mode are now configurable and may be set up to 32. The default tick rate of 32 and send rate of 16 remains the same
+- Equality Operators and `GetHashCode()` to `ReliableKey`
+- Support request for a Host Migration data clean-up via `NetworkRunner.ClearHostMigrationSnapshot`
+- New `NetworkRunner.GetResumeSnapshotNetworkObjectPlayerObjects` API to get access to associated Player Object NetworkIDs when running Host Migration
+- Reset object client prediction with `NetworkObject.ResetToLatestState()`
+- Expose the Photon Cloud Connection RTT via `NetworkRunner.GetRealtimeRtt()`
+
+**Changes**
+
+- The tick and send rates can now be configured more flexibly
+- Improve the NetworkRunner generated documentation
+- In Forecast Physics, when setting `Rigidbody(2D).isKinematic` to true, disable physics interpolation on the `RigidBody`. Otherwise, this prevents smooth movement. Physics interpolation is restored when `isKinematic` is set to false. This behaviour can be disabled on a `NetworkTransform` by setting `PhysicsSettings.SetPhysicsInterpolationToDisabledWhenKinematic` to false in code
+- Forecast Physics Drag and Mass are no longer synced. Use `[Networked]` properties to sync Physics attributes manually, if required
+- Swap internal asserts to warning logs to confirm velocities while Forecast Physics objects are sleeping
+- Physics Forecast objects may now be toggled to and from kinematic. When kinematic they are handled as Forecast disabled. Toggling kinematic is the preferred way to handle this as it synced over the network
+- Better docs for `NetworkSceneManagerDefault.OnSceneInfoChanged()`
+- `NetworkRunner` Editor Inspector displays ping as milliseconds
+- Shared mode clients can now draw their local area of interest cells with `RunnerAOIGizmos`
+- `Release/RequestStateAuthority` returns a bool; false means the call has been unsuccessful
+
+**Bug Fixes**
+
+- Fixed: Invalid warning message suggesting to use `[Networked]` for float/vector properties on structs
+- Fixed: Error during import reporting `PhotonAppSettings` not being loadable
+- Fixed: `AssetDatabase.RegisterCustomDependency` errors on Import
+- Fixed: Tick-aligned RPCs are no longer unnecessarily delayed by the plugin in shared mode
+- Fixed: Global `INetworkRunner` AOI Callbacks are executed on clients in Host/Server mode and not just on the Server
+- Fixed: `NetworkLinkedList.IndexOf` returns -1 if the value is not found
+- Fixed: Kinematic flag, parenting and scale now correctly applied for Physics Forecast objects
+- Fixed: Checking TRSP in `ResolveAOIOverride`
+- Fixed: `NetworkTransform` SyncScale in shared mode
+- Fixed: NMA error when animator has 8 bool parameters or a multiple of 8
+- Fixed: Global INetworkRunner AOI Callbacks are executed on clients in Host/Server mode and not just on the Server
+- Fixed: Enforce Fusion Defines to all supported Build Targets
+- Fixed: Realtime Protocol Fallback Operation Timeout
+- Fixed: A possible disconnect when receiving a very large packet
+- Fixed: RPCs are not invoked when called on state authority when `InvokeLocalMode = RpcInvokeLocalMode.ForwardToServer`
+
+### Build 1240 (Aug 08, 2025)
+
+**Breaking Changes**
+
+- NetworkTransform.DisableSharedModeInterpolation option is now a flag enum value
+- Prefabs and scenes need to be reimported due to baking changes
+- `SendReliableDataToPlayer()`, `SendReliableDataToServer()`, `OnReliableDataReceived()` all now pass `ReadOnlySpan<byte>` to avoid allocations
+
+**What's New**
+
+- Fusion Version Scripting Define Symbols: `FUSION_2`, `FUSION_2_1`, `FUSION_2_1_0`, `FUSION_2_OR_NEWER`, `FUSION_2_0_OR_NEWER`, `FUSION_2_1_OR_NEWER`
+- `NetworkRunner.HasCustomPlugin` - returns `true` if the game is run against a custom plugin
+- `NetworkRunner.FailedToResolveNetworkObject` - an event that can be used to detect cases where `[Networked]` `NetworkObject` properties return null not due to underlying `NetworkId` being zero, but because the object was not found (due to AoI, being destroyed locally etc.)
+- `NetworkTransform` supports the use of physics i.e. `Rigidbody` or `Rigidbody2D` in both Shared and Client-Server modes
+- Object Priority gives control over the update rate of objects
+- [Shared Mode] the size of the Area of Interest cells and the size of the grid can be adjusted in the NetworkProjectConfig
+- Added `RpcChannel.ReliableLargeData` to send RPCs that exceed 512 bytes. Not tick accurate
+- `NetworkRunner.RequestMasterClientReassign` to promote the local player as the master client
+- Non-addressable scenes can now also be loaded with `NetworkRunner.LoadScene(SceneRef.FromPath(...))`
+- [Multipeer] Ensure we execute physics for non-default scenes last in FixedUpdate, so this as close to Unity's normal position of running the physics as possible
+- `FusionUnityHostProfiler` - Fusions integration with Unity profiler
+- Added `FusionMppmCommand.ExecuteAsync`
+- MatchmakingArgumentsExtensions Utility Methods. Helps to setup MatchmakingArguments for Fusion
+- Updated to Realtime SDK 5.1.5
+- New Fusion Intro Sample and switch Fusion Menu to standalone
+- New Fusion Hub
+- NetworkRunner.LocalAddress to access the address Fusion bound to for direct connections
+- `StartGameArgs.PlayerUniqueId` enables reconnects to maintain the same `PlayerRef`
+- Support for breakpoints: ClientServer Mode only. Working on both Multi-Peer and Unity MPPM
+- `RpcAttribute.InvokeLocalMode`. If set to `RpcInvokeLocalMode.ForwardToServer`, locally invokable RPCs will always be forwarded to the server/plugin from clients
+
+**Changes**
+
+- RPCs targeted at state authority do not get sent if the local client is the state authority
+- `Failed to unwrap` warning no longer logged for `NetworkBehaviour` references that fail to resolve, regardless of the reason
+- `Failed to find behaviour` is now logged for an invalid `NetworkBehaviour` on a valid `NetworkObject`
+- Update to Photon Realtime SDK to 5.1.7
+- Clamp `PlayerCount` to a valid range (1-2048) in Shared Mode
+- Clamp Heap `PageCount` to a valid range (16-4096) in Shared Mode
+- Inline help icons added to config's Client/Server Tick/Send rates
+- In/out packets statistics reflect packet fragmentation
+- Update NanoSockets for Android to support 16 KB page sizes
+- OnChangedRender now called at alpha = 0.5 to match interpolators (and reduce perceived latency)
+- Unity-provided packages are ignored when looking for assets. To override, define `FUSION_ENABLE_SEARCH_IN_UNITY_PACKAGES`
+- `NetworkObjectBaker` uses `Fusion.Log` instead of `UnityEngine.Debug`
+- Check if in Session before leaving it
+- Check if connected to Photon Cloud before running disconnect
+- Clicking animator bake failure error messages now shows the relevant gameObject in the hierarchy
+- Keep Session running only if Host/Server disconnected by Timeout
+- Leave Session before disconnect from Photon Cloud
+- Removed `SendReliableDataToPlayer` and `SendReliableDataToServer` with byte arrays; use overloads with with `ReadOnlySpan<byte>` instead. Avoids allocation
+- Editor trace logs are more granular, with following defines controlling specific streams: `FUSION_EDITOR_TRACE_IMPORT`, `FUSION_EDITOR_TRACE_INSPECTOR`, `FUSION_EDITOR_TRACE_TEST`, `FUSION_EDITOR_TRACE_MPPM`
+- `INetPeerGroupCallbacks` no longer deal with `NetSendEnvelope`; `NotifyData` packet type is assumed and data is passed
+- `INetworkRunnerCallbacks.OnUserSimulationMessage` is now obsolete and no longer used
+- `SimulationMessage` is now obsolete
+- `Simulation.IsStateAuthority` handles `PlayerRef.None` correctly (i.e. when it represents the host)
+- `Simulation.IsInputAuthority` handles `PlayerRef.None` and `PlayerRef.MasterClient` correctly
+- Skip opening Fusion Hub in batchmode
+- `NetworkTRSP` state authority change error correction delta default value set to 0
+- Assemblies with `FUSION_FORCE_WEAVING` version define will be weaved even if they are not included in the config's `AssembliesToWeave`
+- `Fusion.Unity` assembly no longer has to be added to the config's `AssembliesToWeave`
+- `NetworkObjectInterestModes` made public
+- `NetworkObject.ObjectInterest` internal field renamed to `NetworkObject.LegacyObjectInterest`; it is used only to migrate to storing interest settings in object flags (handled by the baker)
+- Current flag versions set to `NetworkObjectFlags.V2`. All prefabs and scenes need a rebake
+- `NetworkObject` editor: `Prefab Source` is now selectable
+- `NetworkRunner.FindObject/TryFindObject` no longer throw if simulation is not started
+- NetworkTransform on root NetworkObject is now always placed at index 0, regardless of component order
+- Join Session Log to be more clear
+- Made NetworkSceneManagerDefault.OnSceneInfoChanged method virtual
+- NetworkObjects that remains after shared mode authority leaves now has state authority set to PlayerRef.None
+- DestroyWhenStateAuthorityLeaves prefab flag is now independent from the AllowStateAuthorityOverride
+- Shared mode master client can now despawn network objects with PlayerRef.None as state authority
+- Apply NetworkTransform.DisableSharedModeInterpolation in Single Mode
+
+**Removed**
+
+- `EngineProfiler`, the old DLL-side profiler integration
+- `FusionProfiler`, the old Unity-side profiler integration
+
+**Bug Fixes**
+
+- Fixed: Empty `IntrusiveLinkedListNode` is now different than the one in a single-element list. This is done by the list always being cyclical
+- Fixed: Fusion plugin crashing during stress tests due to the number of RPC to be tracked in an envelope
+- Fixed: VisionOS NanoSockets Static Library
+- Fixed: Prefabs not being replicated until a resimulation tick occur
+- Fixed: MenuItem attribute preventing builds
+- Fixed: Reset re-join attempts when peer is able to join Session
+- Fixed: First item in SimulationConfig (ReplicationFeatures) does not draw it's help correctly in Unity inspector
+- Fixed: Object destroys not being resent in case of a packet loss
+- Fixed: `OnNotifyDataLost` ignoring objects/destroys if there haven't been any RPCs in the packet as well
+- Fixed: Stop repeated Unity warning logging if simulating multi peer physics scenes by not simulating the default scene
+- Fixed: RPCs targeting state authority were not being received when outside the area of interest
+- Fixed: Alloc in `NetSocketHybrid.Receive`
+- Fixed: Alloc in `TimeSeries.Median`
+- Fixed: `NetworkArray<T>.GetRef` throwing `NullReferenceException`
+- Fixed: `NetworkBool` drawer throwing `ArgumentOutOfRangeException`
+- Fixed: Editor error when interacting with invalid network objects. Header can be uninitialized and causes null ref, checking Ptr to avoid it
+- Fixed: Crash in some Unity versions when opening the project in batch mode due to forced recompilation
+- Fixed: [Shared Mode] data not being sent to a client if the previous packet has just been acknowledged
+- Fixed: Invalid authority checks when destroying hierarchies of `NetworkObjects` with mixed authorities
+- Fixed: Error logged when input authority invokes RPC with state authority target mask
+- Fixed: In Shared Mode, if a state authority makes a state change which races against the server removing state authority from it, then flag the original state needing to be re-sent
+- Fixed: [Shared Mode] Pending local deletes being ignored when receiving object updates
+- Fixed: Shutdown normally if Disconnected By PluginLogic
+- Fixed: Use StartGameArgs.Config for PlayerCount, if supplied
+- Fixed: Runtime spawned objects in scene are spawned/despawned multiple times in scene unload with a large amount of objects
+- Fixed: `WriteUsingAreOfInterest` not terminating data block properly
+- Fixed: Structs state authority not checked before writing
+- Fixed: Received objects state authority not checked before applying
+- Fixed: Plugin not deserializing private serializable fields of base types
+- Fixed: Plugin exporter adding preserved protected fields to sub types
+- Fixed: Prefab table not updating if running in batchmode
+- Fixed: Client not rolling objects back to latest snapshot state in certain conditions
+- Fixed: Data RPCs are no longer limited to be 1MB in size
+- Fixed: `SendReliableData` always sending 1MB of data
+- Fixed: `SimulationPacketEnvelope` not freed on packet delivered
+- Fixed: BitScanReverse64 always returning one too high
+- Fixed: Client sometimes not updating `LatestServerTick` after receiving a new snapshot
+- Fixed: Unable to update Session properties after Host Migration
+- Fixed: RPCs failing to send arrays
+- Fixed: `NullReferenceException` when trying to spawn a prefab with `NetworkObject` reference without object provider being set
+- Fixed: `Simulation.Add/RemoveAlwaysInterested` not working in Shared Mode
+- Fixed: Incorrect reset/jump of time on proxy objects after a frame of exceptionally long duration
+- Fixed: Lag Compensation box overlap problem with hitbox Y rotation
+- Fixed: A sequence of lost packets resulting in a partial object data being sent
+- Fixed: Lag Compensation box overlap having problems with hitboxes offset
+- Fixed: Unable to spawn during StateAuthorityChanged callback on MasterClientObjects
+- Fixed: Intro Sample Menu Dependency
+- Fixed: Lag compensation layer masks being ignored with subtick accuracy
+- Fixed: Odin drawers not finding underlying fields
+- Fixed: `NetworkObject.IsSpawnable` setter not working
+- Fixed: RPCs not being forwarded to stateauth (exclusive)
+- Fixed: RpcSerializer offset error
+- Fixed: Plugin can override state auth data again
+- Fixed: Invalid copy of state-auth data for transforms
+- Fixed: Not being able to send changes to plugin-spawned objects
+- Fixed: RpcInfo.Source in single player mode now correctly points to the source player
+- Fixed: NetworkRunner.SessionInfo Support for Single Player
+

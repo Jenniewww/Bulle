@@ -1,0 +1,700 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 996fc906296b981458399ade608e7a97, type: 3}
+  m_Name: FusionEditorHubPagesBeginner
+  m_EditorClassIdentifier: 
+  Content:
+  - Title: 'Welcome '
+    Description: Welcome
+    Icon: {fileID: 2800000, guid: 1c82824849b12cf49bad5798424f2263, type: 3}
+    OverwritePage: Welcome
+    PopupOncePlayerPrefsKey: 
+    Hide:
+      Value: None
+    Elements:
+    - Text: Follow these steps to build your first multitplayer experience and connect
+        your players!
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: e8fd0db9-b29b-4c6a-bcd5-ca3c4b97e49b
+      StepElements: []
+    - Text: Install the Intro Sample and press play see the game running in offline
+        mode.
+      Subtext: 
+      WidgetMode:
+        Value: Step
+      AutoComplete:
+        Value: TypeIsValid
+      Hide:
+        Value: AssetMissing
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: SimpleStartMenu
+      Asset: {fileID: 0}
+      Id: fdd69fd4-9268-44d6-9136-9f67f653477e
+      StepElements:
+      - Text: Install Fusion Intro Sample
+        Subtext: 
+        WidgetMode:
+          Value: InstallPackage
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: Assets/Photon/FusionDemos/Fusion-Intro-Shared/Scenes/FusionIntroShared.unity
+        AddSceneToTop: 0
+        Icon: {fileID: 0}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: 
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 102900000, guid: efe96f20a92845f39108035e60215ded, type: 3}
+        Id: 6861967a-1e87-4fa7-85ec-ad198c24c6ca
+    - Text: Register to a Photon account on our website and create an AppId to run
+        online games.
+      Subtext: 
+      WidgetMode:
+        Value: Step
+      AutoComplete:
+        Value: AppIdCreated
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 97006100-31d0-4249-be0e-1721da7d730c
+      StepElements:
+      - Text: "<b>A Fusion 2 AppId is required to connect to the Fusion public cloud:</b>\r\n 
+          - Open the Photon Dashboard link log in or register an account.\r\n  -
+          Select an existing Fusion 2 AppId or create a new one.\r\n  - Copy the
+          App Id and paste into the field below."
+        Subtext: 
+        WidgetMode:
+          Value: Text
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: 
+        AddSceneToTop: 0
+        Icon: {fileID: 0}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: 
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 0}
+        Id: a375765f-4f17-47d7-aee8-bf70ee016eee
+      - Text: Photon Dashboard (Opens Web Browser)
+        Subtext: Register a Photon account and create free AppIds
+        WidgetMode:
+          Value: LinkButton
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: 
+        AddSceneToTop: 0
+        Icon: {fileID: 1226987765860890946, guid: 0000000000000000d000000000000000,
+          type: 0}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: https://dashboard.photonengine.com
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 0}
+        Id: 676930dd-0aff-451f-b078-ea9f3e08b90d
+      - Text: AppIdBox
+        Subtext: 
+        WidgetMode:
+          Value: AppIdBox
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: 
+        AddSceneToTop: 0
+        Icon: {fileID: 0}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: 
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 0}
+        Id: cbfc9fb4-9126-4a15-99e4-65a10d0dec57
+    - Text: Play the Intro Sample online and make Unity builds to see the sample
+        in online mode.
+      Subtext: 
+      WidgetMode:
+        Value: Step
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: fdd69fd4-9268-44d6-9136-9f67f653477e
+      StepElements:
+      - Text: Open scene
+        Subtext: Open the FusionIntroShared sample scene.
+        WidgetMode:
+          Value: SceneButton
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: Assets/Photon/FusionDemos/Fusion-Intro-Shared/Scenes/FusionIntroShared.unity
+        AddSceneToTop: 0
+        Icon: {fileID: 0}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: 
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 0}
+        Id: 
+    - Text: (Optional) Install the menu package to add a menu template.
+      Subtext: 
+      WidgetMode:
+        Value: Step
+      AutoComplete:
+        Value: TypeIsValid
+      Hide:
+        Value: AssetMissing
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: FusionMenuConfig
+        Class: 
+      Asset: {fileID: 0}
+      Id: 28de5e25-3ed0-4cbd-9583-8a6a9af38221
+      StepElements:
+      - Text: Install Fusion Menu
+        Subtext: Fully-fledged prototyping online game menu
+        WidgetMode:
+          Value: InstallPackage
+        AutoComplete:
+          Value: None
+        Hide:
+          Value: None
+        Scene: Assets/Photon/FusionMenu/FusionSampleMenu.unity
+        AddSceneToTop: 0
+        Icon: {fileID: 2800000, guid: 11859ac134f943f4dbd2de139295f6a7, type: 3}
+        StatusIcon: {fileID: 0}
+        StartPlayMode: 0
+        Url: 
+        Type:
+          ScriptableObject: 
+          Class: 
+        Asset: {fileID: 102900000, guid: 836f7f6323a8417c94643094f079313e, type: 3}
+        Id: 
+    - Text: Further Configurations
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: e8fd0db9-b29b-4c6a-bcd5-ca3c4b97e49b
+      StepElements: []
+    - Text: Network Project Config
+      Subtext: Network settings specific to Fusion.
+      WidgetMode:
+        Value: PingGlobalScriptableObject
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: ee9f419d0e0655a4882d707f86b99f2c, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: Fusion.NetworkProjectConfigAsset
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Photon App Settings
+      Subtext: Network settings specific to the Photon transport.
+      WidgetMode:
+        Value: PingGlobalScriptableObject
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: 43725de47547036498287ad504fe9f9d, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: Fusion.Photon.Realtime.PhotonAppSettings
+        Class: 
+      Asset: {fileID: 4900000, guid: 5705adcaad7c31b439ed88af045846a1, type: 3}
+      Id: 
+      StepElements: []
+    - Text: Fusion Hub Mode
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Switch Hub Mode
+      Subtext: 
+      WidgetMode:
+        Value: SwitchHubMode
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: ee9f419d0e0655a4882d707f86b99f2c, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+  - Title: 'Tutorials '
+    Description: Start learning Fusion with one of our tutorials.
+    Icon: {fileID: 2800000, guid: 11859ac134f943f4dbd2de139295f6a7, type: 3}
+    OverwritePage: Tutorials
+    PopupOncePlayerPrefsKey: 
+    Hide:
+      Value: None
+    Elements:
+    - Text: Fusion Intro Tutorial
+      Subtext: Learn the fundamentals of using Fusion.
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: d6e1233e498157548ac3b473d993dda8, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc.photonengine.com/fusion/2-shared/tutorials/intro-tutorial/overview
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Video Tutorials
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Network Properties
+      Subtext: Learn how to synchronize player data across the network.
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: d6e1233e498157548ac3b473d993dda8, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://youtu.be/CNKFuGHhCXs
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Animations
+      Subtext: Learn how to synchronize player animations across the network.
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: d6e1233e498157548ac3b473d993dda8, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://youtu.be/dWRQ4Fp7VtU
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: In-Room Lobby
+      Subtext: Build a complete In-Room Lobby System.
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: d6e1233e498157548ac3b473d993dda8, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://youtu.be/VkTfB1IxM_k
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+  - Title: 'Documentation '
+    Description: Documentation
+    Icon: {fileID: 2800000, guid: 38e5aa709627a524098b436aca28c8a3, type: 3}
+    OverwritePage: Documentation
+    PopupOncePlayerPrefsKey: 
+    Hide:
+      Value: None
+    Elements:
+    - Text: Fusion Introduction (Opens Web Browser)
+      Subtext: Open the Fusion 2 online documentation to discover tons of material
+        including tutorials, manuals, concepts, samples and addons
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: b673d014dcd3bca4da59e060d2480014, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc.photonengine.com/fusion/2-shared/fusion-shared-intro
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: SDK and Release Notes (Opens Web Browser)
+      Subtext: Open the Fusion 2 SDK online download tables and release notes
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: b673d014dcd3bca4da59e060d2480014, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc.photonengine.com/fusion/2-shared/getting-started/sdk-download#release-notes
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: API Reference (Opens Web Browser)
+      Subtext: Open the online Fusion 2 API reference documentation
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: b673d014dcd3bca4da59e060d2480014, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc-api.photonengine.com/en/fusion/v2/index.html
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+  - Title: Fusion Release Notes
+    Description: Fusion Release Notes
+    Icon: {fileID: 2800000, guid: 38e5aa709627a524098b436aca28c8a3, type: 3}
+    OverwritePage: Fusion Release Notes
+    PopupOncePlayerPrefsKey: 
+    Hide:
+      Value: None
+    Elements:
+    - Text: The Fusion release notes can be found inside the SDK and on our website.
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Release Notes Text File
+      Subtext: Select the Changelog text asset file in the Unity project
+      WidgetMode:
+        Value: PingAsset
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: 38e5aa709627a524098b436aca28c8a3, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 4900000, guid: 5705adcaad7c31b439ed88af045846a1, type: 3}
+      Id: 
+      StepElements: []
+    - Text: Fusion Release Notes (Opens Web Browser)
+      Subtext: Opens the online release notes website
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: b673d014dcd3bca4da59e060d2480014, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc.photonengine.com/fusion/2-shared/getting-started/sdk-download#release-notes
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Draw Changelog
+      Subtext: 
+      WidgetMode:
+        Value: Changelog
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 4900000, guid: 5705adcaad7c31b439ed88af045846a1, type: 3}
+      Id: 
+      StepElements: []
+  - Title: Support
+    Description: Support & Community
+    Icon: {fileID: 2800000, guid: ee9f419d0e0655a4882d707f86b99f2c, type: 3}
+    OverwritePage: Support
+    PopupOncePlayerPrefsKey: 
+    Hide:
+      Value: None
+    Elements:
+    - Text: Take a look at the wide selection of support options and channels.
+      Subtext: 
+      WidgetMode:
+        Value: Text
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 0}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: 
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Photon Gaming Circle (Opens Web Browser)
+      Subtext: Get premium development support from our engineers, access exclusive
+        samples and features equipping you with essential resources
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: e5e2afcb36aab41478ef82baa97b3e20, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://www.photonengine.com/gaming
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Photon Discord Server (Opens Web Browser)
+      Subtext: Join our Photon Discord server
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: 833195cb692afe94a9e314bd38b9cfba, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://dashboard.photonengine.com/discord/joinphotonengine
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []
+    - Text: Fusion 2 Online Documentation (Opens Web Browser)
+      Subtext: Open the Fusion 2 online documentation to discover tons of material
+        including tutorials, manuals, concepts, samples and addons
+      WidgetMode:
+        Value: LinkButton
+      AutoComplete:
+        Value: None
+      Hide:
+        Value: None
+      Scene: 
+      AddSceneToTop: 0
+      Icon: {fileID: 2800000, guid: b673d014dcd3bca4da59e060d2480014, type: 3}
+      StatusIcon: {fileID: 0}
+      StartPlayMode: 0
+      Url: https://doc.photonengine.com/fusion/2-shared
+      Type:
+        ScriptableObject: 
+        Class: 
+      Asset: {fileID: 0}
+      Id: 
+      StepElements: []

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 437e1807b25b8134eae6883cce627ded
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_ViewDataDictionary: {instanceID: 0}
+  - HubSkin: {fileID: 11400000, guid: db84c499838991343a5a0a419616fcbe, type: 2}
+  - BeginnerImage: {fileID: 2800000, guid: bef0d900e60738a41a70d249a4461d8c, type: 3}
+  - AdvancedImage: {fileID: 2800000, guid: 544073575447f0148af1d4495a030580, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

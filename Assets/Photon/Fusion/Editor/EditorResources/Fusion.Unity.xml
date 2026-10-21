@@ -1,0 +1,1545 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fusion.Unity</name>
+    </assembly>
+    <members>
+        <member name="F:Fusion.NetworkRunnerVisibilityExtensions.RecognizedBehaviourNames">
+            <summary>
+            Types that fusion.runtime isn't aware of, which need to be found using names instead.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkRunnerVisibilityExtensions.AddVisibilityNodes(Fusion.NetworkRunner,UnityEngine.GameObject)">
+            <summary>
+            Find all component types that contribute to a scene rendering, and associate them with a <see cref="T:Fusion.RunnerVisibilityLink"/> component, 
+            and add them to the runner's list of visibility nodes.
+            </summary>
+            <param name="go"></param>
+            <param name="runner"></param>
+        </member>
+        <member name="M:Fusion.NetworkRunnerVisibilityExtensions.RefreshRunnerVisibility(Fusion.NetworkRunner,System.Boolean)">
+            <summary>
+            Reapplies a runner's IsVisibile setting to all of its registered visibility nodes.
+            </summary>
+            <param name="runner"></param>
+            <param name="refreshCommonObjects"></param>
+        </member>
+        <member name="F:Fusion.NetworkRunnerVisibilityExtensions.CommonObjectLookup">
+            <summary>
+            Dictionary lookup for manually added visibility nodes (which indicates only one instance should be visible at a time), 
+            which returns a list of nodes for a given LocalIdentifierInFile.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceAddressable`1">
+            <summary>
+            An Addressables-based implementation of the asset source pattern. The asset is loaded from the Addressables system.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAddressable`1.Address">
+            <see cref="F:Fusion.NetworkAssetSourceAddressable`1.RuntimeKey"/>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAddressable`1.RuntimeKey">
+            <summary>
+            Addressables runtime key. Can be used in any form Addressables supports, such as asset name, label, or address.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAddressable`1.Acquire(System.Boolean)">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.Acquire(System.Boolean)"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAddressable`1.Release">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.Release"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAddressable`1.IsCompleted">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceResource`1.IsCompleted"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAddressable`1.WaitForResult">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.WaitForResult"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAddressable`1.Description">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceResource`1.Description"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAddressable`1.EditorInstance">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceResource`1.EditorInstance"/>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceAssetBundle`1">
+            <summary>
+            An AssetBundle-based implementation of the asset source pattern. The asset is loaded from AssetBundles.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAssetBundle`1.AssetBundleName">
+            <summary>
+            Name of the asset bundle.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAssetBundle`1.AssetName">
+            <summary>
+            Name of the asset in the bundle.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAssetBundle`1.NestedAssetName">
+            <summary>
+            Nested asset name, for sub assets.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAssetBundle`1.Acquire(System.Boolean)">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.Acquire(System.Boolean)"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAssetBundle`1.Release">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.Release"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAssetBundle`1.IsCompleted">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceResource`1.IsCompleted"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceAssetBundle`1.WaitForResult">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceResource`1.WaitForResult"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAssetBundle`1.Description">
+            <summary>
+            The description of the asset source. Used for debugging.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceAssetBundle`1.EditorInstance">
+            <summary>
+            Returns the asset instance for Editor purposes. Does not call <see cref="M:Fusion.NetworkAssetSourceAssetBundle`1.Acquire(System.Boolean)"/>.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceAssetBundle">
+            <summary>
+            Utility for <see cref="T:Fusion.NetworkAssetSourceAssetBundle`1"/>.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAssetBundle.AssetBundleRequested">
+            <summary>
+            Global callback that allows for custom AssetBundle loading.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceAssetBundle.AssetUnloaded">
+            <summary>
+            Global callback invoked when an asset is being unloaded.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceResource`1">
+            <summary>
+            Resources-based implementation of the asset source pattern.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceResource`1.ResourcePath">
+            <summary>
+            Resource path. Note that this is a Unity resource path, not a file path.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceResource`1.SubObjectName">
+            <summary>
+            Sub-object name. If empty, the main object is loaded.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceResource`1.Acquire(System.Boolean)">
+            <summary>
+            Loads the asset. In synchronous mode, the asset is loaded immediately. In asynchronous mode, the asset is loaded in the background.
+            </summary>
+            <param name="synchronous"></param>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceResource`1.Release">
+            <summary>
+            Unloads the asset. If the asset is not loaded, an exception is thrown. If the asset is loaded multiple times, it is only
+            unloaded when the last acquire is released.
+            </summary>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceResource`1.IsCompleted">
+            <summary>
+            Returns <see langword="true"/> if the asset is loaded.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceResource`1.WaitForResult">
+            <summary>
+            Blocks until the asset is loaded. If the asset is not loaded, an exception is thrown.
+            </summary>
+            <returns>The loaded asset</returns>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceResource`1.Description">
+            <summary>
+            The description of the asset source. Used for debugging.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceResource`1.EditorInstance">
+            <summary>
+            Returns the asset instance for Editor purposes. Does not call <see cref="M:Fusion.NetworkAssetSourceResource`1.Acquire(System.Boolean)"/>.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceStatic`1">
+            <summary>
+            Hard reference-based implementation of the asset source pattern. This asset source forms a hard reference to the asset and never releases it.
+            This type is meant to be used at runtime. For edit-time, prefer <see cref="T:Fusion.NetworkAssetSourceStaticLazy`1"/>, as it delays
+            actually loading the asset, improving the editor performance.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceStatic`1.Object">
+            <summary>
+            The asset reference. Can point to an asset or to a runtime-created object.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStatic`1.Prefab">
+            <see cref="F:Fusion.NetworkAssetSourceStatic`1.Object"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStatic`1.IsCompleted">
+            <summary>
+            Returns <see langword="true"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStatic`1.Acquire(System.Boolean)">
+            <summary>
+            Does nothing, the asset is always loaded.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStatic`1.Release">
+            <summary>
+            Does nothing, the asset is always loaded.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStatic`1.WaitForResult">
+            <summary>
+            Returns <seealso cref="F:Fusion.NetworkAssetSourceStatic`1.Object"/> or throws an exception if the reference is missing.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStatic`1.Description">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceResource`1.Description"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStatic`1.EditorInstance">
+            <summary>
+            Returns <seealso cref="F:Fusion.NetworkAssetSourceStatic`1.Object"/>.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkAssetSourceStaticLazy`1">
+            <summary>
+            An edit-time optimised version of <see cref="T:Fusion.NetworkAssetSourceStatic`1"/>, taking advantage of Unity's lazy loading of
+            assets. At runtime, this type behaves exactly like <see cref="T:Fusion.NetworkAssetSourceStatic`1"/>, except for the inability
+            to use runtime-created objects.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:Fusion.NetworkAssetSourceStaticLazy`1.Object">
+            <summary>
+            The asset reference. Can only point to an asset, runtime-created objects will not work.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStaticLazy`1.Prefab">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceStatic`1.Prefab"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStaticLazy`1.IsCompleted">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceStatic`1.IsCompleted"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStaticLazy`1.Acquire(System.Boolean)">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceStatic`1.Acquire(System.Boolean)"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStaticLazy`1.Release">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceStatic`1.Release"/>
+        </member>
+        <member name="M:Fusion.NetworkAssetSourceStaticLazy`1.WaitForResult">
+            <inheritdoc cref="M:Fusion.NetworkAssetSourceStatic`1.WaitForResult"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStaticLazy`1.Description">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceStatic`1.Description"/>
+        </member>
+        <member name="P:Fusion.NetworkAssetSourceStaticLazy`1.EditorInstance">
+            <inheritdoc cref="P:Fusion.NetworkAssetSourceStatic`1.EditorInstance"/>
+        </member>
+        <member name="T:Fusion.FusionGlobalScriptableObjectAddressAttribute">
+            <summary>
+            If applied at the assembly level, allows <see cref="T:Fusion.FusionGlobalScriptableObject`1"/> to be loaded with Addressables.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectAddressAttribute.#ctor(System.Type,System.String)">
+            <param name="objectType">The type this attribute will attempt to load.</param>
+            <param name="address">The address to load from.</param>
+        </member>
+        <member name="P:Fusion.FusionGlobalScriptableObjectAddressAttribute.Address">
+            <summary>
+            The address to load from.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectAddressAttribute.Load(System.Type)">
+            <summary>
+            Loads the asset from the <see cref="P:Fusion.FusionGlobalScriptableObjectAddressAttribute.Address"/>. Uses WaitForCompletion internally, so platforms that do not support it need
+            to preload the address prior to loading.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectAddressAttribute.LoadAsync(System.Type)">
+            <summary>
+            Loads the asset from the <see cref="P:Fusion.FusionGlobalScriptableObjectAddressAttribute.Address"/>.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionGlobalScriptableObjectResourceAttribute">
+            <summary>
+            If applied at the assembly level, allows <see cref="T:Fusion.FusionGlobalScriptableObject`1"/> to be loaded with Resources.
+            There is a default registration for this attribute, which attempts to load the asset from Resources using path from
+            <see cref="T:Fusion.FusionGlobalScriptableObjectAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectResourceAttribute.#ctor(System.Type,System.String)">
+            <param name="objectType">The type this attribute will attempt to load.</param>
+            <param name="resourcePath">Resources path or <see langword="null"/>/empty if path from <see cref="T:Fusion.FusionGlobalScriptableObjectAttribute"/>
+            is to be used.</param>
+        </member>
+        <member name="P:Fusion.FusionGlobalScriptableObjectResourceAttribute.ResourcePath">
+            <summary>
+            Path in Resources.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionGlobalScriptableObjectResourceAttribute.InstantiateIfLoadedInEditor">
+            <summary>
+            If loaded in the editor, should the result be instantiated instead of returning the asset itself? The default is <see langword="true"/>. 
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectResourceAttribute.Load(System.Type)">
+            <summary>
+            Loads the asset from Resources synchronously.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionGlobalScriptableObjectResourceAttribute.LoadAsync(System.Type)">
+            <summary>
+            Loads the asset from Resources asynchronously.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsPage.UpdatePage">
+            <summary>
+            Centralized update for the page.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsPage.RefreshView">
+            <summary>
+            Refresh the page visuals. Called in the defined <see cref="F:Fusion.Statistics.FusionStatisticsPage.RefreshRate"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsPage.AfterFusionUpdate">
+            <summary>
+            Hook for <see cref="T:Fusion.IAfterUpdate"/> callback from Fusion, used to store the statistics data to display when updating the page visual.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.Setup">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.UpdatePage">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.RefreshView">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.AfterFusionUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.Open">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsSimulationPage.Close">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsConfig.OnBeforeSerialize">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsConfig.OnAfterDeserialize">
+            <inheritdoc />
+        </member>
+        <member name="T:Fusion.Statistics.FusionStatistics">
+            <summary>
+            Add this class to a <see cref="T:Fusion.NetworkRunner"/> prefab and when a game is started a statistics canvas will be initialized to display internal stats. Stats are only collected when using DEBUG dll.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatistics.AfterUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatistics.Despawned(Fusion.NetworkRunner,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:Fusion.Statistics.StatisticsExtensions">
+            <summary>
+            Extension methods to handle statistics.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.StatisticsExtensions.SetupStatistics(Fusion.NetworkRunner,Fusion.Statistics.FusionStatisticsConfig)">
+            <summary>
+            Set up a <see cref="T:Fusion.Statistics.FusionStatistics"/> and create a <see cref="T:Fusion.Statistics.FusionStatisticsRoot"/> to display the runner statistics.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.StatisticsExtensions.RemoveStatistics(Fusion.NetworkRunner)">
+            <summary>
+            Destroy and clean any <see cref="T:Fusion.Statistics.FusionStatistics"/> and <see cref="T:Fusion.Statistics.FusionStatisticsRoot"/> for this <see cref="T:Fusion.NetworkRunner"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatsLookup.GetValueText(System.Single,System.String[][],System.String)">
+            <summary>
+            Convert from float number to one of the cached strings from the table.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.Setup">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.UpdatePage">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.RefreshView">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.AfterFusionUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.Open">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.Close">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkPage.SetAccumulationRate(Fusion.Statistics.FusionStatisticsPage.AccumulationRate)">
+            <inheritdoc />
+        </member>
+        <member name="P:Fusion.Statistics.LineChart.Title">
+            <summary>
+            Chart title.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.LineChart.DispatchValuesToShader">
+            <summary>
+            Fills the data dispatch array with the values in the order they were added, calculate min and max and sets on the shader.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.Setup">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.UpdatePage">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.RefreshView">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.AfterFusionUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.Open">
+            <inheritdoc />
+        </member>
+        <member name="M:Fusion.Statistics.FusionStatisticsNetworkObjectPage.Close">
+            <inheritdoc />
+        </member>
+        <member name="P:Fusion.Statistics.RadialChart.Title">
+            <summary>
+            Chart title.
+            </summary>
+        </member>
+        <member name="M:Fusion.Statistics.RadialChart.SetShaderValues(System.Single,System.Single)">
+            <summary>
+            Clamps <see cref="!:value"/> between 0 and 1 based on <see cref="!:totalValue"/>. Considers 0 as the base value.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionBasicBillboard">
+            <summary>
+            Component which automatically faces this GameObject toward the supplied Camera. If Camera == null, will face towards Camera.main.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBasicBillboard.Camera">
+            <summary>
+            Force a particular camera to billboard this object toward. Leave null to use Camera.main.
+            </summary>
+        </member>
+        <member name="T:Fusion.EnableOnSingleRunner">
+            <summary>
+            Automatically adds a <see cref="T:Fusion.RunnerVisibilityLink"/> for each indicated component. 
+            These indicated components will be limited to no more than one enabled instance when running in Multi-Peer mode.
+            </summary>
+        </member>
+        <member name="F:Fusion.EnableOnSingleRunner.PreferredRunner">
+            <summary>
+            If more than one runner instance is visible, this indicates which peer's clone of this entity should be visible.
+            </summary>
+        </member>
+        <member name="F:Fusion.EnableOnSingleRunner.Components">
+            <summary>
+            Collection of components that will be marked for Multi-Peer mode as objects that should only have one enabled instance.
+            </summary>
+        </member>
+        <member name="F:Fusion.EnableOnSingleRunner._guid">
+            <summary>
+            Prefix for the GUIDs of <see cref="T:Fusion.RunnerVisibilityLink"/> components which are added at runtime.
+            </summary>
+        </member>
+        <member name="M:Fusion.EnableOnSingleRunner.AddNodes(System.Collections.Generic.List{Fusion.RunnerVisibilityLink})">
+            <summary>
+            At runtime startup, this adds a <see cref="T:Fusion.RunnerVisibilityLink"/> for each component reference to this GameObject.
+            </summary>
+        </member>
+        <member name="M:Fusion.EnableOnSingleRunner.FindRecognizedTypes">
+            <summary>
+            Finds visual/audio components on this GameObject, and adds them to the Components collection.
+            </summary>
+        </member>
+        <member name="M:Fusion.EnableOnSingleRunner.FindNestedRecognizedTypes">
+            <summary>
+            Finds visual/audio nested components on this GameObject and its children, and adds them to the Components collection.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionLogInitializer">
+            <summary>
+            Initializes the logging system for Fusion. Use <see cref="M:Fusion.FusionLogInitializer.InitializeUser(Fusion.LogLevel@,Fusion.TraceChannels@)"/> to completely override the log level and trace channels or
+            to provide a custom logger. Use <see cref="M:Fusion.FusionLogInitializer.InitializeUnityLoggerUser(Fusion.FusionUnityLogger@)"/> to override default Unity logger settings.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionLogInitializer.Initialize">
+            <summary>
+            Initializes the logging system for Fusion. This method is called automatically when the assembly is loaded.
+            </summary>
+        </member>
+        <member name="T:Fusion.RunnerEnableVisibility">
+            <summary>
+              When running in Multi-Peer mode, this component automatically will register the associated
+              <see cref="T:Fusion.NetworkRunner" /> with <see cref="T:Fusion.NetworkRunnerVisibilityExtensions" />,
+              and will automatically attach loaded scene objects and spawned objects with the peers visibility handling.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectBaker.PostprocessBehaviour(Fusion.SimulationBehaviour)">
+            <summary>
+            Postprocesses the behaviour. Returns true if the object was marked dirty.
+            </summary>
+            <param name="behaviour"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fusion.RunnerAOIGizmos">
+            <summary>
+            Add this Component to the NetworkRunner Prefab or GameObject. If Interest Management is enabled in NetworkProjectConfig ReplicationFeatures,
+            gizmos will be shown that indicate active Area Of Interest cells. These gizmos are currently NOT applicable to Shared Mode and will only
+            render for the Server/Host peer.
+            </summary>
+        </member>
+        <member name="T:Fusion.RunnerVisibilityLinksRoot">
+            <summary>
+            Flag component which indicates a NetworkObject has already been factored into a Runner's VisibilityNode list.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionRuntimeCheck">
+            <summary>
+            Used to initialize Runtime flags for Fusion
+            </summary>
+        </member>
+        <member name="T:Fusion.JsonUtilityExtensions">
+            <summary>
+            Extends capabilities of <see cref="T:UnityEngine.JsonUtility"/> by adding type annotations to the serialized JSON, Unity object reference
+            handling and integer enquotement.
+            </summary>
+        </member>
+        <member name="T:Fusion.JsonUtilityExtensions.TypeResolverDelegate">
+            <see cref="M:Fusion.JsonUtilityExtensions.FromJsonWithTypeAnnotation(System.String,Fusion.JsonUtilityExtensions.TypeResolverDelegate)"/>
+        </member>
+        <member name="T:Fusion.JsonUtilityExtensions.TypeSerializerDelegate">
+            <see cref="M:Fusion.JsonUtilityExtensions.ToJsonWithTypeAnnotation(System.Object,Fusion.JsonUtilityExtensions.InstanceIDHandlerDelegate)"/>
+        </member>
+        <member name="T:Fusion.JsonUtilityExtensions.InstanceIDHandlerDelegate">
+            <see cref="M:Fusion.JsonUtilityExtensions.ToJsonWithTypeAnnotation(System.Object,Fusion.JsonUtilityExtensions.InstanceIDHandlerDelegate)"/>
+        </member>
+        <member name="M:Fusion.JsonUtilityExtensions.EnquoteIntegers(System.String,System.Int32)">
+            <summary>
+            Enquotes integers in the JSON string that are at least <paramref name="minDigits"/> long. This is useful for parsers that
+            interpret large integers as floating point numbers.
+            </summary>
+            <param name="json">JSON to process</param>
+            <param name="minDigits">Digit threshold to perfom the enquoting</param>
+            <returns><paramref name="json"/> with long integers enquoted.</returns>
+        </member>
+        <member name="M:Fusion.JsonUtilityExtensions.ToJsonWithTypeAnnotation(System.Object,Fusion.JsonUtilityExtensions.InstanceIDHandlerDelegate)">
+            <summary>
+            Converts the object to JSON with type annotations.
+            </summary>
+            <param name="obj">Object to be serialized.</param>
+            <param name="instanceIDHandler">Handler for UnityEngine.Object references. If the handler returns an empty string,
+            the reference is removed from the final result.</param>
+        </member>
+        <member name="M:Fusion.JsonUtilityExtensions.ToJsonWithTypeAnnotation(System.Object,System.IO.TextWriter,System.Nullable{System.Int32},Fusion.JsonUtilityExtensions.TypeSerializerDelegate,Fusion.JsonUtilityExtensions.InstanceIDHandlerDelegate)">
+            <summary>
+            Converts the object/IList to JSON with type annotations.
+            </summary>
+            <param name="obj">Object to be serialized.</param>
+            <param name="writer">The output TextWriter.</param>
+            <param name="integerEnquoteMinDigits"><see cref="M:Fusion.JsonUtilityExtensions.EnquoteIntegers(System.String,System.Int32)"/></param>
+            <param name="typeSerializer">Handler for obtaining serialized type names. If <see langword="null"/>, the short assembly
+            qualified name (namespace + name + assembly name) will be used.</param>
+            <param name="instanceIDHandler">Handler for UnityEngine.Object references. If the handler returns an empty string,
+            the reference is removed from the final result.</param>
+        </member>
+        <member name="M:Fusion.JsonUtilityExtensions.FromJsonWithTypeAnnotation``1(System.String,Fusion.JsonUtilityExtensions.TypeResolverDelegate)">
+            <summary>
+            Converts JSON with type annotation to an instance of <typeparamref name="T"/>. If the JSON contains type annotations, they need to match
+            the expected result type. If there are no type annotations, use <paramref name="typeResolver"/> to return the expected type.
+            </summary>
+            <param name="json">JSON to be parsed</param>
+            <param name="typeResolver">Converts type name to a type instance.</param>
+        </member>
+        <member name="M:Fusion.JsonUtilityExtensions.FromJsonWithTypeAnnotation(System.String,Fusion.JsonUtilityExtensions.TypeResolverDelegate)">
+            <summary>
+            Converts JSON with type annotation. If there are no type annotations, use <paramref name="typeResolver"/> to return the expected type.
+            </summary>
+            <param name="json">JSON to be parsed</param>
+            <param name="typeResolver">Converts type name to a type instance.</param>
+        </member>
+        <member name="T:Fusion.FusionAddressablesUtils">
+            <summary>
+            Utility class for addressables.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionAddressablesUtils.TryParseAddress(System.String,System.String@,System.String@)">
+            <summary>
+            Tries to parse the address into main part and sub object name.
+            </summary>
+            <param name="address">The address to parse.</param>
+            <param name="mainPart">The main part of the address.</param>
+            <param name="subObjectName">The sub object name.</param>
+            <returns><see langword="true"/> if the address is successfully parsed; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Fusion.FusionAddressablesUtils.CreateAssetReference(System.String)">
+            <summary>
+            Creates an asset reference from the given address.
+            </summary>
+            <param name="address">The address to create the asset reference from.</param>
+            <returns>The created asset reference.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the main part of the address is not a guid or the address is not valid.</exception>
+        </member>
+        <member name="M:Fusion.FusionAddressablesUtils.LoadEditorInstance(System.String)">
+            <summary>
+            Loads the editor instance for the given runtime key.
+            </summary>
+            <param name="runtimeKey">The runtime key.</param>
+            <returns>The loaded editor instance.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when the load editor instance handler is not set.</exception>
+        </member>
+        <member name="M:Fusion.FusionAddressablesUtils.SetLoadEditorInstanceHandler(System.Func{System.String,UnityEngine.Object})">
+            <summary>
+            Sets the load editor instance handler.
+            </summary>
+            <param name="loadEditorInstance">The load editor instance handler.</param>
+        </member>
+        <member name="T:Fusion.FusionMppmStatus">
+            <summary>
+            The current status of MPPM. If the package is not enabled, this will always be <see cref="F:Fusion.FusionMppmStatus.Disabled"/>.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppmStatus.Disabled">
+            <summary>
+            MPPM is not installed.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppmStatus.MainInstance">
+            <summary>
+            This instance is the main instance. Can use <see cref="M:Fusion.FusionMppm.Send``1(``0)"/> to send commands.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppmStatus.VirtualInstance">
+            <summary>
+            This instance is a virtual instance. Will receive commands from the main instance.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionMppm">
+            <summary>
+            Support for Multiplayer Play Mode (MPPM). It uses named pipes
+            to communicate between the main Unity instance and virtual instances.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppm.Status">
+            <summary>
+            The current status of MPPM.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppm.MainEditor">
+            <summary>
+            If <see cref="F:Fusion.FusionMppm.Status"/> is <see cref="F:Fusion.FusionMppmStatus.MainInstance"/>, this static field can be used to send commands.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionMppm.Send``1(``0)">
+            <summary>
+            Sends a command to all virtual instances. Use as:
+            <code>FusionMppm.MainEditor?.Send</code>
+            </summary>
+            <param name="data"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Fusion.FusionMppm.Broadcast``1(``0)">
+            <summary>
+            Broadcasts a command to all virtual instances.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"></param>
+        </member>
+        <member name="T:Fusion.FusionMppmCommand">
+            <summary>
+            The base class for all Fusion MPPM commands.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionMppmCommand.Execute">
+            <summary>
+            Execute the command on a virtual instance. Executes synchronously.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionMppmCommand.ExecuteAsync">
+            <summary>
+            Execute the command on a virtual instance. By default, calls <see cref="M:Fusion.FusionMppmCommand.Execute"/>
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionMppmCommand.NeedsAck">
+            <summary>
+            Does the main instance need to wait for an ack?
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionMppmCommand.PersistentKey">
+            <summary>
+            If the command is persistent (i.e. needs to be executed on each domain reload), this key is used to store it.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionMppmRegisterCustomDependencyCommand">
+            <summary>
+            A command implementing a workaround for MPPM not syncing custom dependencies.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppmRegisterCustomDependencyCommand.DependencyName">
+            <summary>
+            Name of the custom dependency.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMppmRegisterCustomDependencyCommand.Hash">
+            <summary>
+            Hash of the custom dependency.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionMppmRegisterCustomDependencyCommand.NeedsAck">
+            <inheritdoc cref="P:Fusion.FusionMppmCommand.NeedsAck"/>
+        </member>
+        <member name="P:Fusion.FusionMppmRegisterCustomDependencyCommand.PersistentKey">
+            <inheritdoc cref="P:Fusion.FusionMppmCommand.PersistentKey"/>
+        </member>
+        <member name="M:Fusion.FusionMppmRegisterCustomDependencyCommand.Execute">
+            <summary>
+            Registers a custom dependency with the given name and hash.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionUnityEditorPaths">
+            <summary>
+            Fusion Unity paths.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionUnityEditorPaths.Root">
+            <summary>
+            Root folder of Fusion installation.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionUnityExtensions">
+            <summary>
+            Provides backwards compatibility for Unity API.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionUnityHostProfiler">
+            <summary>
+            Profiler implementation for Unity.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.StartInternal(Fusion.HostProfilerMarker)">
+            <inheritdoc cref="M:Fusion.HostProfiler.StartInternal(Fusion.HostProfilerMarker)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.EndInternal(Fusion.HostProfilerMarker)">
+            <inheritdoc cref="M:Fusion.HostProfiler.EndInternal(Fusion.HostProfilerMarker)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.StartInternal(System.String)">
+            <inheritdoc cref="M:Fusion.HostProfiler.StartInternal(Fusion.HostProfilerMarker)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.EndInternal">
+            <inheritdoc cref="M:Fusion.HostProfiler.EndInternal(Fusion.HostProfilerMarker)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.CreateMarkerInternal(System.String)">
+            <inheritdoc cref="M:Fusion.HostProfiler.CreateMarker(System.String)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.CreateSamplerInternal``1(System.String,Fusion.HostProfilerDataUnit)">
+            <inheritdoc cref="M:Fusion.HostProfiler.CreateSampler``1(System.String,Fusion.HostProfilerDataUnit)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.CreateCounterInternal``1(System.String,Fusion.HostProfilerDataUnit,System.Boolean)">
+            <inheritdoc cref="M:Fusion.HostProfiler.CreateCounter``1(System.String,Fusion.HostProfilerDataUnit,System.Boolean)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.SetSampleInternal``1(Fusion.HostProfilerSampler{``0}@,``0)">
+            <inheritdoc cref="M:Fusion.HostProfiler.SetSampleInternal``1(Fusion.HostProfilerSampler{``0}@,``0)"/>
+        </member>
+        <member name="M:Fusion.FusionUnityHostProfiler.SetCountInternal``1(Fusion.HostProfilerCounter{``0}@,``0,System.Boolean)">
+            <inheritdoc cref="M:Fusion.HostProfiler.SetCountInternal``1(Fusion.HostProfilerCounter{``0}@,``0,System.Boolean)"/>
+        </member>
+        <member name="T:Fusion.FusionUnitySceneManagerUtils">
+            <summary>
+            Exension and utility methods for <see cref="T:UnityEngine.SceneManagement.SceneManager"/> and <see cref="T:UnityEngine.SceneManagement.Scene"/> types.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionUnitySceneManagerUtils.SceneEqualityComparer">
+            <summary>
+            A comparer that can be used when scenes need to be comparable, like when being as keys in a dictionary.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.SceneEqualityComparer.Equals(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Compares scenes by their <see cref="P:UnityEngine.SceneManagement.Scene.handle"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.SceneEqualityComparer.GetHashCode(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Returns <see cref="P:UnityEngine.SceneManagement.Scene.handle"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.IsAddedToBuildSettings(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Returns true if <paramref name="scene"/> is in the build settings. Note that just checking <see cref="P:UnityEngine.SceneManagement.Scene.buildIndex"/> is not enough.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.AddToBuildSettings(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Editor-only. Adds scene to the build settings.
+            </summary>
+            <returns>False if the scene is already added</returns>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.CanBeUnloaded(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Returns true if <paramref name="scene"/> can be unloaded.
+            </summary>
+            <param name="scene"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.Dump(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Converts <paramref name="scene"/> into string, dumping all its fields and properties.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.Dump(UnityEngine.SceneManagement.LoadSceneParameters)">
+            <summary>
+            Converts <paramref name="loadSceneParameters"/> to string.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.GetSceneBuildIndex(System.String)">
+            <summary>
+            Gets scene's build index based on its name or path.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.GetComponents``1(UnityEngine.SceneManagement.Scene,System.Boolean)">
+            <summary>
+            Finds all components of type <typeparam name="T"/> in the scene.
+            </summary>
+            <param name="scene"></param>
+            <param name="includeInactive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.GetComponents``1(UnityEngine.SceneManagement.Scene,System.Boolean,UnityEngine.GameObject[]@)">
+            <summary>
+            Finds all components of type <typeparam name="T"/> in the scene.
+            </summary>
+            <param name="scene"></param>
+            <param name="includeInactive"></param>
+            <param name="rootObjects"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.GetComponents``1(UnityEngine.SceneManagement.Scene,System.Collections.Generic.List{``0},System.Boolean)">
+            <summary>
+            Finds all components of type <typeparam name="T"/> in the scene.
+            </summary>
+            <param name="scene"></param>
+            <param name="results"></param>
+            <param name="includeInactive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.FusionUnitySceneManagerUtils.FindComponent``1(UnityEngine.SceneManagement.Scene,System.Boolean)">
+            <summary>
+            Finds the first instance of type <typeparam name="T"/> in the scene. Returns null if no instance found.
+            </summary>
+            <param name="scene"></param>
+            <param name="includeInactive"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Fusion.FusionBootstrapDebugGUI">
+            <summary>
+            Companion component for <see cref="T:Fusion.FusionBootstrap"/>. Automatically added as needed for rendering in-game networking IMGUI.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrapDebugGUI.EnableHotkeys">
+            <summary>
+            When enabled, the in-game user interface buttons can be activated with the keys H (Host), S (Server) and C (Client).
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrapDebugGUI.BaseSkin">
+            <summary>
+            The GUISkin to use as the base for the scalable in-game UI.
+            </summary>
+        </member>
+        <member name="T:Fusion.Matchmaking.MatchmakingArgumentsExtensions">
+            <summary>
+            Extension methods to <see cref="T:Photon.Realtime.MatchmakingArguments"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.Matchmaking.MatchmakingArgumentsExtensions.SetupForFusion(Photon.Realtime.MatchmakingArguments)">
+            <summary>
+            Set up a <see cref="T:Photon.Realtime.MatchmakingArguments"/> for Fusion
+            </summary>
+        </member>
+        <member name="M:Fusion.Matchmaking.MatchmakingArgumentsExtensions.BuildRealtimeClient(Fusion.Photon.Realtime.FusionAppSettings)">
+            <summary>
+            Build and Setup a Realtime Client to be used with Fusion
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkSceneManagerDefault">
+            <summary>
+            The default implementation of <see cref="T:Fusion.INetworkSceneManager"/>. Support single and multiple peer mode. For the latter, each runner is allocated a meta scene with isolated physics.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.IsSceneTakeOverEnabled">
+            <summary>
+            If enabled and there is an already loaded scene that matches what the scene manager has intended to load,
+            that scene will be used instead and load will be avoided.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.LogSceneLoadErrors">
+            <summary>
+            Should all scene load errors be logged into the console? If disabled, errors can still be retrieved via the
+            <see cref="P:Fusion.NetworkSceneAsyncOp.Error"/> or <see cref="M:Fusion.NetworkSceneAsyncOp.AddOnCompleted(System.Action{Fusion.NetworkSceneAsyncOp})"/>.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault._allOwnedScenes">
+            <summary>
+            All the scenes loaded by all the managers. Used when <see cref="F:Fusion.NetworkSceneManagerDefault.IsSceneTakeOverEnabled"/> is enabled.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault._multiPeerSceneRoots">
+            <summary>
+            In multiple peer mode, each runner maintains its own scene where all the newly loaded scenes
+            are moved to. This is to make sure physics are properly sandboxed.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault._runningCoroutines">
+            <summary>
+            List of running coroutines. Only one is actually executed at a time.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault._tempUnloadScene">
+            <summary>
+            For remote clients, this manager first unloads old scenes then loads the new ones. It might happen that all
+            the current scenes need to be unloaded and in such case a temp scene needs to be created to ensure at least one
+            scene loaded at all times. 
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkSceneManagerDefault.MultiPeerScene">
+            <summary>
+            Scene used when Multiple Peer mode is used. Each loaded scene is merged into this one, allowing
+            for multiple runners to have separate cross-scene physics.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkSceneManagerDefault.MultiPeerDontDestroyOnLoadRoot">
+            <summary>
+            Root for DontDestroyOnLoad objects. Instantiated on <see cref="P:Fusion.NetworkSceneManagerDefault.MultiPeerScene"/>.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkSceneManagerDefault.Runner">
+            <summary>
+            The runner this manager is assigned to.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.Initialize(Fusion.NetworkRunner)">
+            <summary>
+            Assigns the runner and, in multiple peer mode, creates a new meta-scene to isolate physics.
+            </summary>
+            <param name="runner"></param>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.Shutdown">
+            <summary>
+            Closes all the scenes previously loaded by the manager. If there are not any more loaded scenes, it creates a temporary
+            "FusionSceneManager_TempEmptyScene" scene.
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkSceneManagerDefault.IsBusy">
+            <summary>
+            Returns true if a scene is being loaded or, in multiple peer mode, if there are no meta-scenes to spawn on. 
+            </summary>
+        </member>
+        <member name="P:Fusion.NetworkSceneManagerDefault.MainRunnerScene">
+            <summary>
+            In multiple peer mode returns a meta scene associated with the runner, otherwise returns <see cref="M:UnityEngine.SceneManagement.SceneManager.GetActiveScene"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.IsRunnerScene(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            In multiple peer mode returns true if <paramref name="scene"/> matches <see cref="P:Fusion.NetworkSceneManagerDefault.MultiPeerScene"/>. In single peer mode, always returns true.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.TryGetPhysicsScene2D(UnityEngine.PhysicsScene2D@)">
+            <summary>
+            Sets <paramref name="scene2D"/> to <see cref="P:Fusion.NetworkSceneManagerDefault.MainRunnerScene"/> physics scene.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.TryGetPhysicsScene3D(UnityEngine.PhysicsScene@)">
+            <summary>
+            Sets <paramref name="scene3D"/> to <see cref="P:Fusion.NetworkSceneManagerDefault.MainRunnerScene"/> physics scene.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.MakeDontDestroyOnLoad(UnityEngine.GameObject)">
+            <summary>
+            In multiple peer, moves the object to a root that is not associated with any scenes. In single peer, simply
+            calls <see cref="M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)"/>
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.MoveGameObjectToScene(UnityEngine.GameObject,Fusion.SceneRef)">
+            <summary>
+            Finds a scene matching <paramref name="sceneRef"/> and moves <paramref name="gameObject"/> there. In multiple peer the object
+            will be also assigned a meta-scene root parent object.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.LoadScene(Fusion.SceneRef,Fusion.NetworkLoadSceneParameters)">
+            <summary>
+            Wrapper around <see cref="M:Fusion.NetworkSceneManagerDefault.LoadSceneCoroutine(Fusion.SceneRef,Fusion.NetworkLoadSceneParameters)"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.UnloadScene(Fusion.SceneRef)">
+            <summary>
+            Wrapper around <see cref="M:Fusion.NetworkSceneManagerDefault.UnloadSceneCoroutine(Fusion.SceneRef)"/>
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.GetSceneRef(System.String)">
+            <summary>
+            Converts name/path to a <see cref="T:Fusion.SceneRef"/>. If Addressables are enabled and the scene is not in the build settings, addressable scenes with <see cref="F:Fusion.NetworkSceneManagerDefault.AddressableScenesLabel"/> label
+            will be discovered and then taken under consideration. Since this might result in a synchronous wait, consider awaiting <see cref="M:Fusion.NetworkSceneManagerDefault.LoadAddressableScenePathsAsync"/> before running the simulation.
+            </summary>
+            <param name="sceneNameOrPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.GetSceneRef(UnityEngine.GameObject)">
+            <summary>
+            For single peer mode redirects to <see cref="M:Fusion.NetworkSceneManagerDefault.GetSceneRef(System.String)"/>. For multiple peer performs a direct check on each of meta-scene root objects.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.OnSceneInfoChanged(Fusion.NetworkSceneInfo,Fusion.NetworkSceneInfoChangeSource)">
+            <summary>
+            Does nothing. Implement this method and return true if you want to handle scene info changes manually. See also <see cref="M:Fusion.INetworkSceneManager.OnSceneInfoChanged(Fusion.NetworkSceneInfo,Fusion.NetworkSceneInfoChangeSource)"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.LoadSceneCoroutine(Fusion.SceneRef,Fusion.NetworkLoadSceneParameters)">
+            <summary>
+            The actual scene loading takes place here. Simulates unloading scenes for <see cref="F:UnityEngine.SceneManagement.LoadSceneMode.Single"/> in multiple peer mode, checks if any of already loaded scenes can be
+            taken over (<see cref="F:Fusion.NetworkSceneManagerDefault.IsSceneTakeOverEnabled"/>). For addressable scenes, it will attempt to load them with Addressables API.
+            Once done, invokes <see cref="M:Fusion.NetworkSceneManagerDefault.OnSceneLoaded(Fusion.SceneRef,UnityEngine.SceneManagement.Scene,Fusion.NetworkLoadSceneParameters)"/>, which can be used for scene post-processing. Progress can be handled with <see cref="M:Fusion.NetworkSceneManagerDefault.OnLoadSceneProgress(Fusion.SceneRef,System.Single)"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.UnloadSceneCoroutine(Fusion.SceneRef)">
+            <summary>
+            Finds the actual scene to unload. If this is the only scene loaded, a temporary empty scene will be created.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.OnSceneLoaded(Fusion.SceneRef,UnityEngine.SceneManagement.Scene,Fusion.NetworkLoadSceneParameters)">
+            <summary>
+            Post-processes the loaded scene. Overrides need to call the base implementation.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.OnLoadSceneProgress(Fusion.SceneRef,System.Single)">
+            <summary>
+            Implement to handle the scene loading process
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.MakeLoadingScope">
+            <summary>
+            Creates a scope in which the scene manager will report itself as <see cref="P:Fusion.NetworkSceneManagerDefault.IsBusy"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.MarkSceneAsOwned(Fusion.SceneRef,UnityEngine.SceneManagement.Scene)">
+            <summary>
+            A scene needs to be "owned" in order for the scene manager to properly track it.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.AddressableScenesLabel">
+            <summary>
+            A label by which addressable scenes can be discovered.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.#ctor">
+            <summary/>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.LoadAddressableScenePathsAsync">
+            <summary>
+            Starts looking for addressable scenes marked with <see cref="F:Fusion.NetworkSceneManagerDefault.AddressableScenesLabel"/>. Since this is an asynchronous operation,
+            it is advised to call this method before attempting to load any addressable scenes. Otherwise, the caller might have to perform
+            a synchronous wait, which may not be supported on some platforms (WebGL).
+            </summary>
+            <seealso cref="M:Fusion.NetworkSceneManagerDefault.GetAddressableScenes"/>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.GetAddressableScenes">
+            <summary>
+            Creates a task that resolves addressable scene paths. By default, this method locates all the addressable scenes with
+            <see cref="F:Fusion.NetworkSceneManagerDefault.AddressableScenesLabel"/> label. Override this method to provide a custom implementation. For example, user
+            might want to have a pre-defined set of addressable scenes to avoid the wait:
+            <example><code>
+            protected override GetAddressableScenesResult GetAddressableScenes() {
+              return Task.FromResult(new string[] {
+                "Assets/Scenes/AddressableScene1.unity",
+                "Assets/Scenes/AddressableScene2.unity",
+              });
+            }
+            </code></example>
+            </summary>
+            <returns>A task representing resolve operation and optionally a delegate to be invoked before the task is going to be
+            awaited synchronously</returns>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.GetAddressableScenePathsTimeout">
+            <summary>
+            Returns the timeout for addressable scene paths to be resolved. By default, this method returns 10 seconds.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Fusion.NetworkSceneManagerDefault.GetAddressableScenesResult">
+            <summary/>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.GetAddressableScenesResult.Task">
+            <summary>
+            A task to be awaited when the scene paths are needed.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.GetAddressableScenesResult.BeforeWaitForCompletion">
+            <summary>
+            In some cases getting a result from a task returned by Addressables will result in a deadlock. What helps is
+            explicitly calling WaitForCompletion beforehand and this is what <see cref="M:Fusion.NetworkSceneManagerDefault.GetAddressableScenes"/> does.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.GetAddressableScenesResult.op_Implicit(System.Threading.Tasks.Task{System.String[]})~Fusion.NetworkSceneManagerDefault.GetAddressableScenesResult">
+            <summary/>
+        </member>
+        <member name="T:Fusion.NetworkSceneManagerDefault.MultiPeerSceneRoot">
+            <summary>
+            A scene root script. In multiple peer mode, each scene is placed on a meta-scene, which a root object per each game scene.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.MultiPeerSceneRoot.SceneRef">
+            <summary>
+            The associated scene ref.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.MultiPeerSceneRoot.ScenePath">
+            <summary>
+            The scene path used to load the scene.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.MultiPeerSceneRoot.SceneHandle">
+            <summary>
+            The scene handle.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkSceneManagerDefault.MultiPeerSceneRoot.Scene">
+            <summary>
+            The scene object. When a scene is unloaded becomes invalid.
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkSceneManagerDefault.LoadingScope">
+            <see cref="M:Fusion.NetworkSceneManagerDefault.MakeLoadingScope"/>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.LoadingScope.#ctor(Fusion.NetworkSceneManagerDefault)">
+            <summary/>
+        </member>
+        <member name="M:Fusion.NetworkSceneManagerDefault.LoadingScope.Dispose">
+            <summary/>
+        </member>
+        <member name="T:Fusion.FusionBootstrap">
+            <summary>
+            A Fusion prototyping class for starting up basic networking. Add this component to your startup scene, and supply a <see cref="F:Fusion.FusionBootstrap.RunnerPrefab"/>.
+            Can be set to automatically startup the network, display an in-game menu, or allow simplified start calls like <see cref="M:Fusion.FusionBootstrap.StartHost"/>.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionBootstrap.StartModes">
+            <summary>
+            Selection for how <see cref="T:Fusion.FusionBootstrap"/> will behave at startup.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionBootstrap.Stage">
+            <summary>
+            The current stage of connection or shutdown.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.RunnerPrefab">
+            <summary>
+            Supply a Prefab or a scene object which has the <see cref="T:Fusion.NetworkRunner"/> component on it, 
+            as well as any runner dependent components which implement <see cref="T:Fusion.INetworkRunnerCallbacks"/>, 
+            such as <see cref="T:Fusion.NetworkEvents"/> or your own custom INetworkInput implementations.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.StartMode">
+            <summary>
+            Select how network startup will be triggered. Automatically, by in-game menu selection, or exclusively by script.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.AutoStartAs">
+            <summary>
+            When <see cref="F:Fusion.FusionBootstrap.StartMode"/> is set to <see cref="F:Fusion.FusionBootstrap.StartModes.Automatic"/>, this option selects if the <see cref="T:Fusion.NetworkRunner"/> 
+            will be started as a dedicated server, or as a host (which is a server with a local player).
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.AutoHideGUI">
+            <summary>
+            <see cref="T:Fusion.FusionBootstrapDebugGUI"/> will not render GUI elements while <see cref="P:Fusion.FusionBootstrap.CurrentStage"/> == <see cref="F:Fusion.FusionBootstrap.Stage.AllConnected"/>.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.AutoClients">
+            <summary>
+            The number of client <see cref="T:Fusion.NetworkRunner"/> instances that will be created if running in Multi-Peer Mode. 
+            When using the Select start mode, this number will be the default value for the additional clients option box.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.ClientStartDelay">
+            <summary>
+            How long to wait after starting a peer before starting the next one.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.ServerPort">
+            <summary>
+            The port that server/host <see cref="T:Fusion.NetworkRunner"/> will use.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.DefaultRoomName">
+            <summary>
+            The default room name to use when connecting to photon cloud.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.InitialScenePath">
+            <summary>
+            The Scene that will be loaded after network shutdown completes (all peers have disconnected). 
+            If this field is null or invalid, will be set to the current scene when <see cref="T:Fusion.FusionBootstrap"/> runs Awake().
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap._currentStage">
+            <summary>
+            Indicates which step of the startup process <see cref="T:Fusion.FusionBootstrap"/> is currently in.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.AutoConnectVirtualInstances">
+            <summary>
+            Requires Multiplayer Play Mode (MPPM) to be installed. If enabled, <see cref="T:Fusion.FusionBootstrap"/> will automatically join the virtual instance.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionBootstrap.VirtualInstanceConnectDelay">
+            <summary>
+            How much to wait before the main instance lets the virtual instances connect.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionBootstrap.CurrentStage">
+            <summary>
+            Indicates which step of the startup process <see cref="T:Fusion.FusionBootstrap"/> is currently in.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionBootstrap.LastCreatedClientIndex">
+            <summary>
+            The index number used for the last created peer.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionBootstrap.CurrentServerMode">
+            <summary>
+            The server mode that was used for initial startup. Used to inform UI which client modes should be available.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartSinglePlayer">
+            <summary>
+            Start a single player instance.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartServer">
+            <summary>
+            Start a server instance.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartHost">
+            <summary>
+            Start a host instance. This is a server instance, with a local player.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartClient">
+            <summary>
+            Start a client instance.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartServerPlusClients">
+            <summary>
+            Start a Fusion server instance, and the number of client instances indicated by <see cref="F:Fusion.FusionBootstrap.AutoClients"/>. 
+            InstanceMode must be set to Multi-Peer mode, as this requires multiple <see cref="T:Fusion.NetworkRunner"/> instances.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartHostPlusClients">
+            <summary>
+            Start a Fusion host instance, and the number of client instances indicated by <see cref="F:Fusion.FusionBootstrap.AutoClients"/>. 
+            InstanceMode must be set to Multi-Peer mode, as this requires multiple <see cref="T:Fusion.NetworkRunner"/> instances.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartServerPlusClients(System.Int32)">
+            <summary>
+            Start a Fusion server instance, and the indicated number of client instances. 
+            InstanceMode must be set to Multi-Peer mode, as this requires multiple <see cref="T:Fusion.NetworkRunner"/> instances.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartHostPlusClients(System.Int32)">
+            <summary>
+            Start a Fusion host instance (server with local player), and the indicated number of additional client instances. 
+            InstanceMode must be set to Multi-Peer mode, as this requires multiple <see cref="T:Fusion.NetworkRunner"/> instances.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartMultipleClients(System.Int32)">
+            <summary>
+            Start a Fusion host instance (server with local player), and the indicated number of additional client instances. 
+            InstanceMode must be set to Multi-Peer mode, as this requires multiple <see cref="T:Fusion.NetworkRunner"/> instances.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionBootstrap.StartMultipleSharedClients(System.Int32)">
+            <summary>
+            Start as Room on the Photon cloud, and connects as one or more clients.
+            </summary>
+            <param name="clientCount"></param>
+        </member>
+        <member name="P:Fusion.FusionBootstrap.ShouldShowGUI">
+            <summary>
+            Only show the GUI if the StartMode is set to UserInterface and not being run in a Virtual Instance (MPPM).
+            </summary>
+        </member>
+        <member name="T:Fusion.NetworkPrefabSourceStatic">
+            <summary>
+            Hard reference-based implementation of the asset source pattern. This asset source forms a hard reference to the asset and never releases it.
+            This type is meant to be used at runtime. For edit-time, prefer <see cref="T:Fusion.NetworkPrefabSourceStaticLazy"/>, as it delays
+            actually loading the asset, improving the editor performance.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkPrefabSourceStatic.AssetGuid">
+            <inheritdoc cref="P:Fusion.INetworkPrefabSource.AssetGuid"/>
+        </member>
+        <member name="T:Fusion.NetworkPrefabSourceStaticLazy">
+            <summary>
+            An edit-time optimised version of <see cref="T:Fusion.NetworkPrefabSourceStatic"/>, taking advantage of Unity's lazy loading of
+            assets. At runtime, this type behaves exactly like <see cref="T:Fusion.NetworkPrefabSourceStatic"/>, except for the inability
+            to use runtime-created objects.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkPrefabSourceStaticLazy.AssetGuid">
+            <inheritdoc cref="P:Fusion.INetworkPrefabSource.AssetGuid"/>
+        </member>
+        <member name="T:Fusion.NetworkPrefabSourceResource">
+            <summary>
+            Resources-based implementation of the asset source pattern.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkPrefabSourceResource.AssetGuid">
+            <inheritdoc cref="P:Fusion.INetworkPrefabSource.AssetGuid"/>
+        </member>
+        <member name="T:Fusion.NetworkPrefabSourceAssetBundle">
+            <summary>
+            An AssetBundle implementation of the asset source pattern.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkPrefabSourceAssetBundle.AssetGuid">
+            <inheritdoc cref="P:Fusion.INetworkPrefabSource.AssetGuid"/>
+        </member>
+        <member name="T:Fusion.NetworkPrefabSourceAddressable">
+            <summary>
+            An Addressables-based implementation of the asset source pattern. The asset is loaded from the Addressables system.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkPrefabSourceAddressable.AssetGuid">
+            <inheritdoc cref="P:Fusion.INetworkPrefabSource.AssetGuid"/>
+        </member>
+        <member name="T:Fusion.FusionScalableIMGUI">
+            <summary>
+            In-Game IMGUI style used for the <see cref="T:Fusion.FusionBootstrapDebugGUI"/> interface.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionScalableIMGUI.GetScaledSkin(UnityEngine.GUISkin,System.Single@,System.Single@,System.Int32@,System.Int32@,System.Single@)">
+            <summary>
+            Get the custom scalable skin, already resized to the current screen. Provides the height, width, padding and margin used.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Fusion.FusionScalableIMGUI.ScaleGuiSkinToScreenHeight">
+            <summary>
+            Modifies a skin to make it scale with screen height.
+            </summary>
+            <returns>Returns (height, width, padding, top-margin, left-box-margin) values applied to the GuiSkin</returns>
+        </member>
+        <member name="T:Fusion.NetworkObjectProviderDefault">
+            <summary>
+            The default implementation of <see cref="T:Fusion.INetworkObjectProvider"/>. Uses <see cref="P:Fusion.NetworkRunner.Prefabs"/> to acquire prefab instances. Pooling is not implemented by default, but
+            can be implemented in <see cref="M:Fusion.NetworkObjectProviderDefault.InstantiatePrefab(Fusion.NetworkRunner,Fusion.NetworkObject)"/> virtual method.
+            </summary>
+        </member>
+        <member name="F:Fusion.NetworkObjectProviderDefault.DelayIfSceneManagerIsBusy">
+            <summary>
+            If enabled, the provider will delay acquiring a prefab instance if the scene manager is busy.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.AcquireInstance(Fusion.NetworkRunner,Fusion.NetworkObjectAcquireContext@,Fusion.NetworkObject@)">
+            <summary>
+            If <see cref="F:Fusion.NetworkObjectAcquireContext.TypeId"/> points to a scene object, returns <see cref="F:Fusion.NetworkObjectAcquireContext.AttachableInstance"/>.
+            Otherwise, uses <see cref="P:Fusion.NetworkRunner.Prefabs"/> to go acquire a prefab and then calls <see cref="M:Fusion.NetworkObjectProviderDefault.InstantiatePrefab(Fusion.NetworkRunner,Fusion.NetworkObject)"/>. 
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.CreatePrefabInstance(Fusion.NetworkRunner,Fusion.NetworkPrefabId,System.Boolean,System.Boolean)">
+            <summary>
+            Uses <see cref="P:Fusion.NetworkRunner.Prefabs"/> to load a prefab instance and then calls <see cref="M:Fusion.NetworkObjectProviderDefault.InstantiatePrefab(Fusion.NetworkRunner,Fusion.NetworkObject)"/> to create an instance.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.ReleaseInstance(Fusion.NetworkRunner,Fusion.NetworkObjectReleaseContext@)">
+            <summary>
+            If <see cref="F:Fusion.NetworkObjectReleaseContext.IsBeingDestroyed"/> is false, calls one of Destroy methods, depending what type of object is being dealt with. To implement pooling, it may
+            be better to override Destroy methods instead.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.GetPrefabId(Fusion.NetworkRunner,Fusion.NetworkObjectGuid)">
+            <summary>
+            Uses <see cref="P:Fusion.NetworkRunner.Prefabs"/> to translate <see cref="T:Fusion.NetworkObjectGuid"/> to <see cref="T:Fusion.NetworkPrefabId"/>.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.InstantiatePrefab(Fusion.NetworkRunner,Fusion.NetworkObject)">
+            <summary>
+            Calls <see cref="M:UnityEngine.Object.Instantiate(UnityEngine.Object)"/>. Override to alter this behaviour.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.DestroyPrefabInstance(Fusion.NetworkRunner,Fusion.NetworkPrefabId,Fusion.NetworkObject)">
+            <summary>
+            Calls <see cref="M:UnityEngine.Object.Destroy(UnityEngine.Object)"/>. Override to alter this behaviour.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.DestroyPrefabNestedObject(Fusion.NetworkRunner,Fusion.NetworkPrefabId,System.Int32,Fusion.NetworkObject)">
+            <summary>
+            Calls <see cref="M:UnityEngine.Object.Destroy(UnityEngine.Object)"/>. Override to alter this behaviour.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.DestroyPrefabNestedObject(Fusion.NetworkRunner,Fusion.NetworkObject)">
+            <summary>
+            Calls <see cref="M:UnityEngine.Object.Destroy(UnityEngine.Object)"/>. Override to alter this behaviour.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.DestroySceneObject(Fusion.NetworkRunner,Fusion.NetworkSceneObjectId,Fusion.NetworkObject)">
+            <summary>
+            Calls <see cref="M:UnityEngine.Object.Destroy(UnityEngine.Object)"/>. Override to alter this behaviour.
+            </summary>
+        </member>
+        <member name="M:Fusion.NetworkObjectProviderDefault.AcquirePrefabInstance(Fusion.NetworkRunner,Fusion.NetworkPrefabAcquireContext@,Fusion.NetworkObject@)">
+            <summary>
+            Legacy API implementation.
+            </summary>
+        </member>
+        <member name="T:Fusion.FusionUnityLogger">
+            <summary>
+            Fusion logger implementation for Unity.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionUnityLogger.LogActiveRunnerTick">
+            <summary>
+            If true, the active runner's tick will be logged.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionUnityLogger.LogActiveRunnerLocalPlayer">
+            <summary>
+            If true, the active runner's local player will be logged.
+            </summary>
+        </member>
+        <member name="M:Fusion.FusionUnityLogger.#ctor(System.Threading.Thread,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Fusion.FusionUnityLogger.CreateMessage(Fusion.FusionUnityLoggerBase.LogContext@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Fusion.IRunnerVisibilityRecognizedType">
+            <summary>
+            Flags a MonoBehaviour class as a RunnerVisibilityControl recognized type. 
+            Will be included in runner visibility handling, and will be found by <see cref="T:Fusion.EnableOnSingleRunner"/> component finds.
+            </summary>
+        </member>
+        <member name="T:Fusion.RunnerVisibilityLink">
+            <summary>
+            Identifies visible/audible components (such as renderers, canvases, lights) that should be enabled/disabled by runner visibility handling.
+            Automatically added to scene objects and spawned objects during play if running in <see cref="F:Fusion.NetworkProjectConfig.PeerModes.Multiple"/>. 
+            Additionally this component can be added manually at development time to identify specific Behaviours or Renderers you would like to restrict to one enabled copy at a time.
+            </summary>
+        </member>
+        <member name="T:Fusion.RunnerVisibilityLink.PreferredRunners">
+            <summary>
+            The peer runner that will be used if more than one runner is visible, and this node was manually added by developer (indicating only one instance should be visible at a time).
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.PreferredRunners.Auto">
+            <summary>
+            The first visible runner will be used.
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.PreferredRunners.Server">
+            <summary>
+            The server peer/runner will be used if visible.
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.PreferredRunners.Client">
+            <summary>
+            The first client peer/runner will be used if visible.
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.PreferredRunners.InputAuthority">
+            <summary>
+            The components will only be enabled on the instance that has input authority over the NetworkObject. Unlike the other options, this expects a NetworkObject to work and it will search its children and parents for it. 
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.PreferredRunner">
+            <summary>
+            If more than one runner instance is visible, this indicates which peer's clone of this entity should be visible.
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.Component">
+            <summary>
+            The associated component with this node. This Behaviour or Renderer will be enabled/disabled when its NetworkRunner.IsVisible value is changed.
+            </summary>
+        </member>
+        <member name="F:Fusion.RunnerVisibilityLink.Guid">
+            <summary>
+            Guid is used for common objects (user flagged components that should only run in one instance), to identify matching clones.
+            </summary>
+        </member>
+        <member name="P:Fusion.RunnerVisibilityLink.DefaultState">
+            <summary>
+            Set to false to indicate that this object should remain disabled even when a runner is visible.
+            </summary>
+        </member>
+        <member name="M:Fusion.RunnerVisibilityLink.SetEnabled(System.Boolean)">
+            <summary>
+            Sets the visibility state of this node.
+            </summary>
+            <param name="enabled"></param>
+        </member>
+        <member name="T:Fusion.FusionMenuSceneInfo">
+            <summary>
+            Info asset for creating configurable selectable scenes in the Photon menu.
+            This type was moved to the SDK to simplify adding scenes automatically (e.g. when installing another unity package).
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMenuSceneInfo.Name">
+            <summary>
+            Displayed scene name.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionMenuSceneInfo.NameOrSceneName">
+            <summary>
+            Returns either <see cref="F:Fusion.FusionMenuSceneInfo.Name"/> or <see cref="P:Fusion.FusionMenuSceneInfo.SceneName"/>.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMenuSceneInfo.ScenePath">
+            <summary>
+            The path to the scene asset.
+            </summary>
+        </member>
+        <member name="P:Fusion.FusionMenuSceneInfo.SceneName">
+            <summary>
+            Gets the filename of the ScenePath to set as Unity scene to load during connection sequence.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMenuSceneInfo.Preview">
+            <summary>
+            The sprite displayed as scene preview in the scene selection UI.
+            </summary>
+        </member>
+        <member name="F:Fusion.FusionMenuSceneInfo.IsHidden">
+            <summary>
+            Don't use this scene.
+            </summary>
+        </member>
+    </members>
+</doc>
