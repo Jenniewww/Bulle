@@ -17,7 +17,10 @@ public class FiveSpheresController : MonoBehaviour
 
     [Header("Initial Layout")]
     public float radius = 0.75f;
-    public float heightBelowHead = 0.55f;
+
+    [Tooltip("Vertical distance below the headset in meters.")]
+    public float heightBelowHead = 0.65f;
+
     public float sphereDiameter = 0.16f;
 
     public float[] angles =
@@ -35,7 +38,6 @@ public class FiveSpheresController : MonoBehaviour
     [Header("Debug")]
     public bool debugGrip = true;
 
-    private float fixedHeight;
     private Vector3[] localPositions;
 
     private class GrabState
@@ -57,21 +59,15 @@ public class FiveSpheresController : MonoBehaviour
     void EnableEmbeddedAction(InputActionProperty property)
     {
         if (property.reference == null)
+        {
             property.action?.Enable();
+        }
     }
 
     void Start()
     {
         localPositions = new Vector3[spheres.Length];
 
-        // Preserve the original fixed-height behavior
-        if (head != null)
-        {
-            fixedHeight =
-                head.position.y - heightBelowHead;
-        }
-
-        // Initialize sphere positions
         for (int i = 0; i < spheres.Length; i++)
         {
             if (spheres[i] == null)
@@ -94,44 +90,8 @@ public class FiveSpheresController : MonoBehaviour
                 Vector3.one * sphereDiameter;
         }
 
-        Debug.Log(
-            "[FiveSpheres] Controller initialized."
-        );
-
         PrintActionInfo("LEFT", leftGrip.action);
         PrintActionInfo("RIGHT", rightGrip.action);
-    }
-
-    void PrintActionInfo(
-        string side,
-        InputAction action)
-    {
-        if (!debugGrip)
-            return;
-
-        if (action == null)
-        {
-            Debug.LogWarning(
-                "[" + side + "] ACTION IS NULL"
-            );
-            return;
-        }
-
-        Debug.Log(
-            "[" + side + "] Action: " +
-            action.name +
-            " | Enabled: " + action.enabled +
-            " | Bindings: " +
-            action.bindings.Count
-        );
-
-        foreach (var control in action.controls)
-        {
-            Debug.Log(
-                "[" + side + "] Resolved control: " +
-                control.path
-            );
-        }
     }
 
     void Update()
@@ -154,29 +114,6 @@ public class FiveSpheresController : MonoBehaviour
         );
     }
 
-    void DiagnoseGripPress(
-        string side,
-        InputAction action)
-    {
-        if (!debugGrip || action == null ||
-            !action.enabled)
-            return;
-
-        if (action.WasPressedThisFrame())
-        {
-            Debug.Log(
-                "[" + side + "] GRIP DETECTED"
-            );
-        }
-
-        if (action.WasReleasedThisFrame())
-        {
-            Debug.Log(
-                "[" + side + "] GRIP RELEASED"
-            );
-        }
-    }
-
     void LateUpdate()
     {
         if (head == null)
@@ -184,16 +121,21 @@ public class FiveSpheresController : MonoBehaviour
 
         if (followUser)
         {
-            Vector3 targetPosition = head.position;
+            // Use the headset's WORLD position.
+            Vector3 headWorldPosition = head.position;
 
-            // Follow horizontally only
-            targetPosition.y = fixedHeight;
+            // Follow horizontally and vertically.
+            // Place the sphere controller below the head.
+            Vector3 targetWorldPosition = new Vector3(
+                headWorldPosition.x,
+                headWorldPosition.y - heightBelowHead,
+                headWorldPosition.z
+            );
 
-            transform.position = targetPosition;
+            transform.position = targetWorldPosition;
         }
 
-        // Do not rotate with the head
-
+        // Preserve manually dragged positions.
         for (int i = 0; i < spheres.Length; i++)
         {
             if (spheres[i] == null)
@@ -224,7 +166,6 @@ public class FiveSpheresController : MonoBehaviour
             controller.forward
         );
 
-        // Select sphere on Grip press
         if (grip.WasPressedThisFrame())
         {
             int index = FindSphereAlongRay(ray);
@@ -232,41 +173,16 @@ public class FiveSpheresController : MonoBehaviour
             if (debugGrip)
             {
                 Debug.Log(
-                    "[" + side + "] Ray origin: " +
-                    ray.origin +
-                    " | Direction: " +
-                    ray.direction +
-                    " | Selected index: " +
-                    index
+                    "[" + side + "] Selected: " + index
                 );
             }
 
             if (index < 0)
-            {
-                if (debugGrip)
-                {
-                    Debug.LogWarning(
-                        "[" + side +
-                        "] NO SPHERE SELECTED."
-                    );
-                }
-
                 return;
-            }
 
             if (leftGrab.selected == index ||
                 rightGrab.selected == index)
-            {
-                if (debugGrip)
-                {
-                    Debug.LogWarning(
-                        "[" + side +
-                        "] Sphere already grabbed."
-                    );
-                }
-
                 return;
-            }
 
             state.selected = index;
 
@@ -281,14 +197,8 @@ public class FiveSpheresController : MonoBehaviour
             state.offset =
                 sphereWorld -
                 ray.GetPoint(state.depth);
-
-            Debug.Log(
-                "[" + side + "] GRABBED: " +
-                spheres[index].name
-            );
         }
 
-        // Move sphere on horizontal XZ plane
         if (grip.IsPressed() &&
             state.selected >= 0)
         {
@@ -303,28 +213,17 @@ public class FiveSpheresController : MonoBehaviour
                     targetWorld
                 );
 
-            // Keep the original Y coordinate
-            targetLocal.y =
-                localPositions[index].y;
+            // Keep points on the horizontal plane.
+            targetLocal.y = localPositions[index].y;
 
-            localPositions[index] =
-                targetLocal;
+            localPositions[index] = targetLocal;
 
             spheres[index].localPosition =
                 targetLocal;
         }
 
-        // Release sphere
         if (grip.WasReleasedThisFrame())
         {
-            if (state.selected >= 0)
-            {
-                Debug.Log(
-                    "[" + side + "] RELEASED: " +
-                    spheres[state.selected].name
-                );
-            }
-
             state.selected = -1;
         }
     }
@@ -374,21 +273,48 @@ public class FiveSpheresController : MonoBehaviour
         return closest;
     }
 
-    // Run this from the component's context menu
+    void DiagnoseGripPress(string side, InputAction action)
+    {
+        if (!debugGrip ||
+            action == null ||
+            !action.enabled)
+            return;
+
+        if (action.WasPressedThisFrame())
+            Debug.Log("[" + side + "] GRIP DETECTED");
+
+        if (action.WasReleasedThisFrame())
+            Debug.Log("[" + side + "] GRIP RELEASED");
+    }
+
+    void PrintActionInfo(string side, InputAction action)
+    {
+        if (!debugGrip)
+            return;
+
+        if (action == null)
+        {
+            Debug.LogWarning(
+                "[" + side + "] ACTION IS NULL"
+            );
+            return;
+        }
+
+        Debug.Log(
+            "[" + side + "] Action: " +
+            action.name +
+            " | Enabled: " + action.enabled
+        );
+    }
+
     [ContextMenu("Diagnose XR Grip")]
     public void DiagnoseXRGrip()
     {
-        Debug.Log(
-            "========== XR GRIP DIAGNOSIS =========="
-        );
-
         DiagnoseAction("LEFT", leftGrip.action);
         DiagnoseAction("RIGHT", rightGrip.action);
     }
 
-    void DiagnoseAction(
-        string side,
-        InputAction action)
+    void DiagnoseAction(string side, InputAction action)
     {
         if (action == null)
         {
@@ -399,30 +325,14 @@ public class FiveSpheresController : MonoBehaviour
         }
 
         Debug.Log(
-            "[" + side + "] Enabled: " +
-            action.enabled
+            "[" + side + "] Enabled: " + action.enabled
         );
-
-        Debug.Log(
-            "[" + side + "] Controls count: " +
-            action.controls.Count
-        );
-
-        foreach (var binding in action.bindings)
-        {
-            Debug.Log(
-                "[" + side + "] Binding: " +
-                binding.effectivePath
-            );
-        }
 
         foreach (var control in action.controls)
         {
             Debug.Log(
                 "[" + side + "] Control: " +
-                control.path +
-                " | Device: " +
-                control.device.displayName
+                control.path
             );
         }
     }
