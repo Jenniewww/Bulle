@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &30978585
 Transform:
   m_ObjectHideFlags: 0
@@ -4372,7 +4372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1214585276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7112,6 +7112,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1951776298}
     - target: {fileID: 2280237172266947676, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280237172266947676, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
       propertyPath: fourZonesPrefab
       value: 
       objectReference: {fileID: 1162262128}
@@ -7126,6 +7130,10 @@ PrefabInstance:
     - target: {fileID: 3418068745299325104, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 1483197535
+      objectReference: {fileID: 0}
+    - target: {fileID: 3865775799316616942, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4792786353934697461, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
       propertyPath: head
@@ -7146,6 +7154,10 @@ PrefabInstance:
     - target: {fileID: 6087964126592752337, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
       propertyPath: SortKey
       value: 2813928244
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087964126592752337, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6587910678349559186, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7199,6 +7211,10 @@ PrefabInstance:
       propertyPath: rightController
       value: 
       objectReference: {fileID: 1207715618}
+    - target: {fileID: 8292445609947430175, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
