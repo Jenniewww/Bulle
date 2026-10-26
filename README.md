@@ -54,12 +54,35 @@
 3. **Améliorer la représentation / 完善空间表达：** rendre les zones plus lisibles et ajustables selon les retours d'utilisation.
 4. **Ajouter le questionnaire / 加入问卷：** définir les questions, le protocole de passation et l'exploitation des réponses.
 
-## 6. Questionnaire utilisateur — à compléter | 用户问卷——待补充
+## 6. Protocole expérimental et questionnaire | 实验方案与问卷
 
-**FR** — Cette section sera complétée après la conception du questionnaire : objectifs, questions, déroulement de l'expérience, modalités de recueil et analyse des réponses. **Aucune donnée d'enquête n'est présentée à ce stade.**
+**FR** — Deux documents de travail accompagnent le prototype :
 
-**中文** — 本节将在问卷设计完成后补充：研究目标、题目、实验流程、数据收集方式及结果分析。**目前尚未加入问卷数据或调查结论。**
+- [Protocole de test](docs/Protocole%20de%20test.docx) : déroulement de l'expérience, consignes de calibration et de comparaison à deux, questionnaire en deux parties.
+- [Définition des bulles](docs/D%C3%A9finition%20des%20bulles.docx) : définitions des quatre distances proxémiques et revue exploratoire d'études liées à la proxémie et à la réalité virtuelle.
+
+**中文** — 项目附有两份工作文档：
+
+- [实验方案](docs/Protocole%20de%20test.docx)：包含个人空间校准、双人对比实验、操作说明和两阶段问卷。
+- [泡泡定义与文献](docs/D%C3%A9finition%20des%20bulles.docx)：解释四种人际距离，并整理人际距离与虚拟现实相关研究。
+
+### Déroulement envisagé | 计划实验流程
+
+1. **Calibration individuelle / 个人校准：** présentation des quatre zones, ajustement initial dans le casque, puis ajustement en présence d'une personne proche, d'une connaissance et d'une personne inconnue. / 介绍四个区域，用户先自行调整，再与亲近的人、熟人和陌生人分别测试并调整。
+2. **Interaction à deux / 双人交互：** comparaison des distances et comportements sans bulles visibles, puis avec visualisation des bulles. / 对比不显示泡泡和显示泡泡时的距离及互动行为。
+3. **Retour utilisateur / 用户反馈：** questionnaire après la calibration, puis après l'interaction à deux. / 校准后及双人互动后分别填写问卷。
+
+### Axes du questionnaire (brouillon) | 问卷方向（草案）
+
+- **Confort et design / 舒适度与设计：** hauteur des halos, transparence, couleurs, lisibilité, facilité de modification. / 高度、透明度、颜色、可见性与操作难度。
+- **Compréhension / 理解程度：** compréhension des zones intime, personnelle, sociale et publique. / 对亲密、个人、社交、公共四种空间的理解。
+- **Effet sur l'interaction / 对互动的影响：** rapprochement ou éloignement, franchissement des zones, gêne éventuelle. / 距离变化、跨越边界及不适感。
+- **Expérience XR / XR 体验：** sentiment de présence et inconfort éventuel lié au casque. / 沉浸感及可能的晕动不适。
+
+**FR — État :** le protocole et les questions existent sous forme de documents de travail ; ils ne sont **pas encore intégrés à l'application**. Aucun résultat de participants n'est rapporté. Le protocole prévoit notamment d'enregistrer les positions des points de contrôle avant et après interaction, de figer la forme validée et de mesurer les distances entre utilisateurs ; ces fonctions restent à développer ou à valider. Les modalités de recueil, de consentement et d'analyse devront être précisées avant les tests.
+
+**中文 — 当前状态：** 已有实验流程和问卷草案，但**尚未集成到应用程序中**，也没有参与者测试结果。方案提出记录互动前后的控制点坐标、锁定确认后的泡泡形状、测量双人距离等开发需求，目前仍需实现或验证。正式测试前还需要明确数据收集、参与者同意和分析方式。
 
 ---
 
-**État du projet / 项目状态 :** prototype XR local fonctionnel sur plusieurs aspects ; réglage spatial et expérience collaborative encore en développement. / 本地 XR 原型部分功能可用，空间定位与双人协作仍在开发中。
+**État du projet / 项目状态 :** prototype XR local partiellement fonctionnel ; positionnement spatial, synchronisation à deux et protocole utilisateur encore en cours de développement. / 本地 XR 原型部分功能可用，空间定位、双人同步和用户实验仍在开发中。
