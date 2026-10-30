@@ -12,6 +12,9 @@ public class ControllerRayVisual : MonoBehaviour
     [Header("Direction")]
     public bool useNegativeZ = false;
 
+    [Tooltip("Additional local rotation of the ray, in degrees")]
+    public Vector3 directionOffset = Vector3.zero;
+
     private LineRenderer line;
     private Material rayMaterial;
 
@@ -24,12 +27,16 @@ public class ControllerRayVisual : MonoBehaviour
 
         line.startWidth = rayWidth;
         line.endWidth = rayWidth;
-
         line.numCapVertices = 6;
 
         Shader shader = Shader.Find(
             "Universal Render Pipeline/Unlit"
         );
+
+        if (shader == null)
+        {
+            shader = Shader.Find("Sprites/Default");
+        }
 
         rayMaterial = new Material(shader);
         rayMaterial.color = rayColor;
@@ -39,9 +46,15 @@ public class ControllerRayVisual : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 direction = useNegativeZ
-            ? -transform.forward
-            : transform.forward;
+        Vector3 localDirection =
+            useNegativeZ ? Vector3.back : Vector3.forward;
+
+        Quaternion offsetRotation =
+            Quaternion.Euler(directionOffset);
+
+        Vector3 direction =
+            transform.rotation *
+            (offsetRotation * localDirection);
 
         Vector3 start = transform.position;
         Vector3 end = start + direction * rayLength;
@@ -53,6 +66,8 @@ public class ControllerRayVisual : MonoBehaviour
     void OnDestroy()
     {
         if (rayMaterial != null)
+        {
             Destroy(rayMaterial);
+        }
     }
 }

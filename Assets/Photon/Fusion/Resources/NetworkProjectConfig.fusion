@@ -14,7 +14,7 @@
     "InvokeRenderMode": 1,
     "NetworkIdIsObjectName": false,
     "HideNetworkObjectInactivityGuard": false,
-    "AllowClientServerModesInWebGL": false,
+    "AllowClientServerModesInWebGL": true,
     "AllowMasterClientReassignRequest": false,
     "MasterClientRequestReassignThreshold": 2.0,
     "ClientsRecordFrameAndPacketTimingTraces": false,

@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 55daccc09a3b69647bbab145b54a3ab3
   - enabled: 1
     path: Assets/Scenes/AnchorTest.unity
     guid: e80190ee3c3bba24fbd2ef2a30a0ba37
-  - enabled: 1
+  - enabled: 0
     path: Assets/Photon/FusionDemos/Fusion-Intro-Shared/Scenes/FusionIntroShared.unity
     guid: 0c93e24ebcb1fed489eeaf2f36cfb925
-  - enabled: 1
+  - enabled: 0
     path: Assets/Photon/FusionMenu/FusionSampleMenu.unity
     guid: 74c3b330900a03442806ce69f1fe5955
   m_configObjects:
