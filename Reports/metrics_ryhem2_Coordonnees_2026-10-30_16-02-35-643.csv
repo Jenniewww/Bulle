@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+ryhem2_Coordonnees_2026-10-30_16-02-35-643.csv;unknown;unknown;Intime;5;0.548609;0.417885;0.835770;0.914497;0.971924;3.028204;0.751801;;;0.000000;not_saved
+ryhem2_Coordonnees_2026-10-30_16-02-35-643.csv;unknown;unknown;Personnelle;5;2.524762;0.896469;1.792938;1.719629;1.924071;6.195853;0.826472;;;0.000000;not_saved
+ryhem2_Coordonnees_2026-10-30_16-02-35-643.csv;unknown;unknown;Sociale;5;14.351475;2.137339;4.274677;4.249710;4.277312;14.911855;0.811041;;;0.000000;not_saved
+ryhem2_Coordonnees_2026-10-30_16-02-35-643.csv;unknown;unknown;Publique;5;25.410134;2.843993;5.687986;5.862163;5.784302;19.867842;0.808938;;;0.000000;not_saved

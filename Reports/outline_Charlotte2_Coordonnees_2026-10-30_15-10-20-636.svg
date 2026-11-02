@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 710 760">
+<rect width="710" height="760" fill="white"/>
+<text x="35" y="35" font-family="Arial" font-size="19" font-weight="bold">Bulle: four-zone X/Z outline (5-point polygon approximation)</text>
+<path d="M 35 355 H 660 M 340 60 V 665" stroke="#dedede" stroke-width="1"/>
+<text x="650" y="347" font-family="Arial" font-size="13">X</text>
+<text x="349" y="70" font-family="Arial" font-size="13">+Z</text>
+<polygon points="177.7,577.9 502.3,577.9 546.8,239.7 340.0,132.1 133.2,239.7" fill="#8a67d2" fill-opacity="0.06" stroke="#8a67d2" stroke-width="3"/>
+<circle cx="177.7" cy="577.9" r="4" fill="#8a67d2"/>
+<circle cx="502.3" cy="577.9" r="4" fill="#8a67d2"/>
+<circle cx="546.8" cy="239.7" r="4" fill="#8a67d2"/>
+<circle cx="340.0" cy="132.1" r="4" fill="#8a67d2"/>
+<circle cx="133.2" cy="239.7" r="4" fill="#8a67d2"/>
+<polygon points="254.2,466.2 441.4,505.4 458.1,325.9 361.9,263.7 234.1,309.2" fill="#43b877" fill-opacity="0.06" stroke="#43b877" stroke-width="3"/>
+<circle cx="254.2" cy="466.2" r="4" fill="#43b877"/>
+<circle cx="441.4" cy="505.4" r="4" fill="#43b877"/>
+<circle cx="458.1" cy="325.9" r="4" fill="#43b877"/>
+<circle cx="361.9" cy="263.7" r="4" fill="#43b877"/>
+<circle cx="234.1" cy="309.2" r="4" fill="#43b877"/>
+<polygon points="283.6,433.2 374.3,440.4 395.0,363.8 345.1,321.3 283.6,348.7" fill="#f3a43b" fill-opacity="0.06" stroke="#f3a43b" stroke-width="3"/>
+<circle cx="283.6" cy="433.2" r="4" fill="#f3a43b"/>
+<circle cx="374.3" cy="440.4" r="4" fill="#f3a43b"/>
+<circle cx="395.0" cy="363.8" r="4" fill="#f3a43b"/>
+<circle cx="345.1" cy="321.3" r="4" fill="#f3a43b"/>
+<circle cx="283.6" cy="348.7" r="4" fill="#f3a43b"/>
+<polygon points="318.1,398.5 341.9,410.9 366.0,392.2 355.0,364.7 321.0,365.9" fill="#e84e52" fill-opacity="0.06" stroke="#e84e52" stroke-width="3"/>
+<circle cx="318.1" cy="398.5" r="4" fill="#e84e52"/>
+<circle cx="341.9" cy="410.9" r="4" fill="#e84e52"/>
+<circle cx="366.0" cy="392.2" r="4" fill="#e84e52"/>
+<circle cx="355.0" cy="364.7" r="4" fill="#e84e52"/>
+<circle cx="321.0" cy="365.9" r="4" fill="#e84e52"/>
+<circle cx="40" cy="702" r="6" fill="#e84e52"/>
+<text x="51" y="707" font-family="Arial" font-size="13">Intime</text>
+<circle cx="150" cy="702" r="6" fill="#f3a43b"/>
+<text x="161" y="707" font-family="Arial" font-size="13">Personnelle</text>
+<circle cx="315" cy="702" r="6" fill="#43b877"/>
+<text x="326" y="707" font-family="Arial" font-size="13">Sociale</text>
+<circle cx="440" cy="702" r="6" fill="#8a67d2"/>
+<text x="451" y="707" font-family="Arial" font-size="13">Publique</text>
+<text x="35" y="741" font-family="Arial" font-size="12" fill="#666">Relative X/Z plot; not a full reconstruction of Unity splines.</text>
+</svg>

@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Charlotte1_Coordonnees_2026-10-30_15-08-02-842.csv;unknown;unknown;Intime;5;0.406641;0.359775;0.719550;0.758287;0.733163;2.437028;0.860400;;;0.000000;not_saved
+Charlotte1_Coordonnees_2026-10-30_15-08-02-842.csv;unknown;unknown;Personnelle;5;2.571299;0.904693;1.809387;1.765372;1.887091;6.142290;0.856450;;;0.000000;not_saved
+Charlotte1_Coordonnees_2026-10-30_15-08-02-842.csv;unknown;unknown;Sociale;5;10.221111;1.803741;3.607481;3.548675;3.830175;12.359832;0.840781;;;0.000000;not_saved
+Charlotte1_Coordonnees_2026-10-30_15-08-02-842.csv;unknown;unknown;Publique;5;36.924011;3.428305;6.856611;6.553216;7.064178;23.339722;0.851780;;;0.000000;not_saved

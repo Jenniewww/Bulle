@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Arthur2_Coordonnees_2026-10-30_15-00-19-639.csv;unknown;unknown;Intime;5;0.121433;0.196604;0.393208;0.485042;0.388163;1.392957;0.786447;;;0.000000;not_saved
+Arthur2_Coordonnees_2026-10-30_15-00-19-639.csv;unknown;unknown;Personnelle;5;0.444006;0.375941;0.751882;0.859111;0.741199;2.567851;0.846173;;;0.000000;not_saved
+Arthur2_Coordonnees_2026-10-30_15-00-19-639.csv;unknown;unknown;Sociale;5;1.076421;0.585351;1.170701;1.193715;1.282544;4.064591;0.818763;;;0.000000;not_saved
+Arthur2_Coordonnees_2026-10-30_15-00-19-639.csv;unknown;unknown;Publique;5;2.340154;0.863072;1.726145;1.717248;1.809269;5.906821;0.842843;;;0.000000;not_saved

@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Gabriel2_Coordonnees_2026-10-30_16-31-05-722.csv;unknown;unknown;Intime;5;0.377373;0.346585;0.693171;0.698255;0.754712;2.354297;0.855575;;;0.000000;not_saved
+Gabriel2_Coordonnees_2026-10-30_16-31-05-722.csv;unknown;unknown;Personnelle;5;1.474866;0.685175;1.370349;1.361046;1.500567;4.694714;0.840899;;;0.000000;not_saved
+Gabriel2_Coordonnees_2026-10-30_16-31-05-722.csv;unknown;unknown;Sociale;5;3.935041;1.119179;2.238359;2.429543;2.379072;7.596689;0.856861;;;0.000000;not_saved
+Gabriel2_Coordonnees_2026-10-30_16-31-05-722.csv;unknown;unknown;Publique;5;8.140881;1.609759;3.219517;3.453895;3.403804;10.908363;0.859730;;;0.000000;not_saved

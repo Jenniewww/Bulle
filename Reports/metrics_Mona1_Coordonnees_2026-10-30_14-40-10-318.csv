@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Mona1_Coordonnees_2026-10-30_14-40-10-318.csv;unknown;unknown;Intime;5;0.052535;0.129315;0.258630;0.287821;0.310540;0.894840;0.824458;;;0.000000;not_saved
+Mona1_Coordonnees_2026-10-30_14-40-10-318.csv;unknown;unknown;Personnelle;5;0.510483;0.403103;0.806205;0.856969;0.870312;2.735275;0.857411;;;0.000000;not_saved
+Mona1_Coordonnees_2026-10-30_14-40-10-318.csv;unknown;unknown;Sociale;5;1.603630;0.714459;1.428917;1.532867;1.522690;4.938407;0.826305;;;0.000000;not_saved
+Mona1_Coordonnees_2026-10-30_14-40-10-318.csv;unknown;unknown;Publique;5;4.322884;1.173037;2.346075;2.448775;2.551110;8.009700;0.846742;;;0.000000;not_saved

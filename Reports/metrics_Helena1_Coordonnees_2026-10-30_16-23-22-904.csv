@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Helena1_Coordonnees_2026-10-30_16-23-22-904.csv;unknown;unknown;Intime;5;1.423149;0.673055;1.346109;1.221801;1.646756;4.683877;0.815172;;;0.000000;not_saved
+Helena1_Coordonnees_2026-10-30_16-23-22-904.csv;unknown;unknown;Personnelle;5;1.602511;0.714209;1.428419;1.309865;1.458383;4.967507;0.816082;;;0.000000;not_saved
+Helena1_Coordonnees_2026-10-30_16-23-22-904.csv;unknown;unknown;Sociale;5;4.244353;1.162334;2.324667;2.871269;2.276649;8.153107;0.802371;;;0.000000;not_saved
+Helena1_Coordonnees_2026-10-30_16-23-22-904.csv;unknown;unknown;Publique;5;11.978425;1.952652;3.905305;5.755056;4.266501;15.102738;0.659931;;;0.000000;not_saved

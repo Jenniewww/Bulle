@@ -1,0 +1,5 @@
+﻿File;SessionId;Phase;Zone;Points;Area_m2;Equivalent_radius_m;Equivalent_diameter_m;Width_X_m;Depth_Z_m;Polygon_perimeter_m;Compactness_0_1;Radial_min_m;Radial_max_m;Y_spread_m;Center_source
+Zijie2_Coordonnees_2026-10-30_15-34-01-336.csv;unknown;unknown;Intime;5;0.383179;0.349242;0.698483;0.653128;0.820408;2.439752;0.808947;;;0.000000;not_saved
+Zijie2_Coordonnees_2026-10-30_15-34-01-336.csv;unknown;unknown;Personnelle;5;1.456104;0.680803;1.361606;1.496114;1.535483;4.621507;0.856713;;;0.000000;not_saved
+Zijie2_Coordonnees_2026-10-30_15-34-01-336.csv;unknown;unknown;Sociale;5;6.203899;1.405262;2.810525;3.142563;2.820026;9.588263;0.847998;;;0.000000;not_saved
+Zijie2_Coordonnees_2026-10-30_15-34-01-336.csv;unknown;unknown;Publique;5;22.881034;2.698751;5.397503;4.833108;5.843849;18.614727;0.829798;;;0.000000;not_saved
