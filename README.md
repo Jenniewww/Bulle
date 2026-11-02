@@ -94,7 +94,9 @@ Bulle/
 
 **V1.0 既有 CSV：** `Index;Nom;X;Y;Z`，其中记录 20 个控制点时，按四层各五点进行解释。旧格式没有显式的身体中心，因而可以计算轮廓面积和 X/Z 跨度，但不能可靠推断控制点距身体中心的真实距离。
 
-**可选增强版导出：** 在保持旧格式前五列不变的基础上，添加 `Zone`、`Point`、`CenterX/Y/Z`、`Phase`、`SessionId` 等字段，记录区域归属、空间参照、测量阶段与匿名实验编号；同一次启动第一次保存自动为 `initial`，第二次及之后为 `final`。升级代码见 `Unity/Scripting/CoordinateManager.cs`。
+**FR — Format actuel :** `Index;Nom;X;Y;Z`, avec 20 points répartis en quatre groupes de cinq. Le script `CoordinateManager.cs` de cette mise à jour conserve ce format, vérifie la présence des 20 points et déclenche des événements de succès/échec pour l'interface XR. Il conserve le dossier de sortie original `Documents/RelevesVR`. Les CSV historiques, même avec deux marqueurs BOM UTF-8, sont pris en charge par l'analyseur Python. Les mesures de distance au corps nécessiteraient une référence supplémentaire, non présente dans les anciens CSV.
+
+**中文 — 当前格式：** `Index;Nom;X;Y;Z`，20 点分为四组、每组 5 点。本次更新的 `CoordinateManager.cs` 保留原格式与 `Documents/RelevesVR` 输出目录，增加 20 点完整性验证和保存成功/失败事件。Python 支持历史 CSV 中重复的 UTF-8 BOM。旧 CSV 没有身体中心参考，因此不能据此推断真实的人体中心距离。
 
 运行（Windows，Python 3）：
 
@@ -111,9 +113,11 @@ python Tools\analyze_bulle_csv.py --data D:\Bulle\Data --out D:\Bulle\Reports
 
 - [Protocole de test](docs/Protocole%20de%20test.docx) — 个人校准、与不同熟悉程度的人接近、双人互动与前后对比。
 - [Définition des bulles](docs/D%C3%A9finition%20des%20bulles.docx) — Hall 的四种距离定义及相关研究综述。
-- **[Questionnaire Google Forms — Répondre](https://docs.google.com/forms/d/e/1FAIpQLScVudi-cjfZsHRLrLHXSIc4pNQ077iVJjswrPWrQFQzQKS5XA/viewform)** — 参与者主观反馈问卷（已创建链接）。
+- **[Questionnaire Google Forms — Répondre / 填写问卷](https://docs.google.com/forms/d/e/1FAIpQLScVudi-cjfZsHRLrLHXSIc4pNQ077iVJjswrPWrQFQzQKS5XA/viewform)** — Lien participant à vérifier avant diffusion / 公开填写链接，发布前确认是否对应最新表单。
 
-**实验建议：** 每次启动自动生成匿名 `SessionId`；第一次保存为 `initial`，第二次及之后保存为 `final`。保存两份独立 CSV，才能在统计上比较面积、等效半径和形状变化。收集实验数据时应告知参与者用途并取得同意，避免将姓名写入公开仓库。
+**FR — Protocole :** conserver deux fichiers CSV par participant (avant / après), identifiés par un code pseudonyme dans le nom de fichier ou dans un registre séparé. Le code Unity fourni ne crée pas automatiquement les phases `initial`/`final`. Informer les participants et recueillir leur accord avant la collecte.
+
+**中文 — 实验建议：** 每名参与者保存两份 CSV（调整前/后），通过匿名编号及文件名区分。本次 Unity 代码**不会自动标记** `initial`/`final`，需要按实验流程管理文件。采集前告知参与者数据用途并征得同意。
 
 ## 8. Exécuter le build | Windows 构建与运行
 
@@ -125,12 +129,12 @@ python Tools\analyze_bulle_csv.py --data D:\Bulle\Data --out D:\Bulle\Reports
 4. 检查 FourZones 是否显示、Grip 是否可以拖动、按钮显隐是否有效、Trigger 是否成功保存 CSV。
 5. 如果修改 Unity C# 或场景，**旧的 EXE 不会自动更新**；需要在 `File > Build Profiles` 重新构建 Windows x64，并替换对应输出。
 
-**数据路径**：旧版脚本默认写入 Windows 的 `Documents/RelevesVR`；本次提供的升级版在 **Unity Editor** 下写入项目 `Data/`，而在 EXE 下写入 Unity 的 `Application.persistentDataPath/Data`（常见于 `%USERPROFILE%\AppData\LocalLow\<Company>\<Product>\Data`）。实际位置在 Console 的 `[BULLE CSV] Saved ...` 中显示。
+**Données / 数据路径：** L’ancien script et le script corrigé écrivent tous deux dans `Documents/RelevesVR`. Pour l’analyse, copier les CSV dans `D:\Bulle\Data`. / 原脚本与本次修正版都保存到 `Documents/RelevesVR`；分析时将 CSV 复制到 `D:\Bulle\Data`。
 
 ## 9. Roadmap | 后续开发优先级
 
 1. **v1.0 验收与冻结**：检查 EXE、单人功能、CSV 20 点和场景引用，提交 Git tag `v1.0`。
-2. **v1.0.x 实验工具优化**：保存成功的 XR UI 反馈、中心参照、初始/最终两次导出、Python 分析。
+2. **v1.0.x 实验工具优化**：保存成功的 XR UI 反馈、中心参照扩展、初始/最终两次导出管理、Python 分析。
 3. **v1.1 双机显示**：Fusion Host/Client 为两人生成 Avatar，先同步位置和对方的 FourZones。
 4. **v1.2 同步行为与空间**：控制点与显隐同步、统一真实空间参考点、双人实验验证。
 5. **后续研究分析**：配对比较初始/最终的四层面积、等效半径及主观问卷结果。
