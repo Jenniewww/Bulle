@@ -26,8 +26,6 @@ Le projet cherche à explorer plusieurs questions :
 - La familiarité avec une personne influence-t-elle la perception des distances interpersonnelles ?
 - La réalité mixte peut-elle aider à mieux comprendre la notion d'espace personnel ?
 
-Le projet associe développement informatique, interaction immersive et expérimentation auprès d'utilisateurs.
-
 ### 中文
 
 **La forme de ma bulle（我的个人空间泡泡）** 是一个研究**人际距离学（Proxémie）**的混合现实项目。
@@ -43,8 +41,6 @@ Le projet associe développement informatique, interaction immersive et expérim
 - 当其他人靠近时，个人空间是否会发生变化？
 - 熟悉程度是否影响人们对人际距离的感知？
 - 混合现实是否能够帮助人们理解个人空间？
-
-项目结合了 Unity 开发、沉浸式交互和用户实验。
 
 ---
 
@@ -119,10 +115,10 @@ Unity 6.3 LTS
     |     +-- Right Controller
     |
     +-- FourZones
-    |     +-- Intime
-    |     +-- Personnelle
-    |     +-- Sociale
-    |     +-- Publique
+    |     +-- Zone_Intime
+    |     +-- Zone_Personnelle
+    |     +-- Zone_Sociale
+    |     +-- Zone_Publique
     |
     +-- Acquisition
     |     +-- CoordinateController
@@ -162,8 +158,6 @@ L'application représente quatre espaces autour de l'utilisateur :
 - Zone publique
 
 Chaque zone possède cinq points de contrôle permettant de modifier sa géométrie.
-
-Les frontières sont représentées à l'aide d'éléments graphiques construits dans Unity.
 
 **中文**
 
@@ -321,16 +315,13 @@ Bulle/
 |   |-- figures/
 |       |-- radius_by_participant.png
 |       |-- area_change.png
+|       |-- mean_area_by_zone.png
 |
 |-- Builds/
 |   |-- Client/
 |       |-- Bulle.exe
 |       |-- Bulle_Data/
 |       |-- ...
-|
-|-- docs/
-|   |-- Protocole de test.docx
-|   |-- Définition des bulles.docx
 |
 |-- README.md
 |-- .gitignore
@@ -346,19 +337,15 @@ Bulle/
 
 | Script | Fonction / 功能 |
 |---|---|
-| `FiveSpheresController.cs` | Gestion des points de contrôle / 控制点管理 |
 | `BulleFollower.cs` | Suivi de la caméra / 头显跟随 |
-| `ControllerRayVisual.cs` | Visualisation des rayons / 手柄射线 |
 | `CoordinateManager.cs` | Acquisition et export CSV / 坐标采集与导出 |
-| `ControllerAcquisition.cs` | Déclenchement de l'acquisition / 触发保存 |
 | `AcquisitionFeedbackUI.cs` | Retour visuel de sauvegarde / 保存反馈 |
-| `NetworkBullePlayer.cs` | Prototype d'état réseau / 网络玩家原型 |
-| `BullePlayerSpawner.cs` | Prototype de création des joueurs / 玩家生成原型 |
-| `FourZonesNetworkSync.cs` | Expérimentation de synchronisation / 同步实验 |
+| Scripts de contrôle des zones | Affichage et déformation / 区域显示与变形 |
+| Scripts Photon Fusion | Prototype réseau / 网络原型 |
 
-**FR** — Certains scripts réseau correspondent à des expérimentations et ne constituent pas encore un système multijoueur complet.
+**FR** — Les scripts réseau correspondent à des expérimentations et ne constituent pas encore un système multijoueur complet.
 
-**中文** — 部分网络脚本属于实验性实现，双人同步尚未完成。
+**中文** — 网络脚本属于实验性实现，双人同步尚未完成。
 
 ---
 
@@ -606,8 +593,6 @@ Le rayon équivalent est défini comme le rayon d'un cercle de même surface :
 
 Cette grandeur permet de comparer les dimensions des zones, même lorsque leurs formes ne sont pas circulaires.
 
-La largeur et la profondeur sont estimées à partir des coordonnées extrêmes sur les axes X et Z.
-
 **中文**
 
 将每个区域的五个控制点投影到水平 XZ 平面。
@@ -623,8 +608,6 @@ La largeur et la profondeur sont estimées à partir des coordonnées extrêmes 
 等效半径表示一个与原区域面积相等的圆的半径。
 
 即使区域形状不规则，也可以使用该指标比较不同区域的总体尺寸。
-
-宽度和深度分别由 X、Z 坐标的最大值与最小值之差计算。
 
 **Limite / 局限：** Il s'agit d'une approximation à cinq sommets et non de la surface exacte des splines Unity. / 这是五边形近似，不是 Unity 样条曲线的精确面积。
 
@@ -645,43 +628,59 @@ Rayon équivalent moyen lors de la première acquisition (n = 8).
 
 Les dimensions moyennes augmentent progressivement de la zone intime à la zone publique, conformément à l'organisation attendue des quatre catégories.
 
-Cependant, les dimensions varient fortement d'un participant à l'autre.
+Cependant, les dimensions varient d'un participant à l'autre.
 
 **中文**
 
 从总体平均值看，四个区域由内向外逐渐扩大，符合四种人际距离区域的预期层级。
 
-但不同参与者的区域尺寸存在明显差异。
+但不同参与者的区域尺寸存在差异。
 
 ### 8.4 Visualisation des dimensions | 区域尺寸可视化
 
+**FR**
+
 Le graphique suivant compare les rayons équivalents des quatre zones pour chaque participant lors de la première acquisition.
+
+**中文**
 
 下图展示第一次测量中，每名参与者四个区域的等效半径。
 
 ![Rayons équivalents par participant / 各参与者等效半径](Reports/figures/radius_by_participant.png)
 
-**FR**
-
-Cette visualisation permet d'observer les différences individuelles, notamment pour les zones sociale et publique.
-
-**中文**
-
-该图可以直观比较不同参与者的空间尺寸，尤其是社交区和公共区的差异。
-
 ### 8.5 Évolution entre les deux acquisitions | 两次测量的变化
 
-Le graphique suivant présente la variation relative de surface entre les deux acquisitions :
+**FR**
+
+La variation relative de surface est calculée selon la formule :
 
 **Variation (%) = (A₂ − A₁) / A₁ × 100**
 
-下图展示第二次相对于第一次测量的面积变化百分比：
+**中文**
+
+第二次测量相对于第一次测量的面积变化率：
 
 **变化率（%）=（第二次面积 − 第一次面积）/ 第一次面积 × 100**
 
 ![Variation des surfaces / 两次测量的面积变化](Reports/figures/area_change.png)
 
-### 8.6 Observations individuelles | 个体观察
+### 8.6 Comparaison des surfaces moyennes | 平均面积对比
+
+**FR**
+
+Le graphique suivant compare les surfaces moyennes des quatre zones entre la première et la deuxième acquisition.
+
+Il permet d'observer les tendances globales de variation des dimensions de l'espace personnel.
+
+**中文**
+
+下图比较第一次和第二次测量中四个区域的平均面积。
+
+可以用于观察个人空间尺寸的总体变化趋势。
+
+![Surfaces moyennes par zone / 四区域平均面积](Reports/figures/mean_area_by_zone.png)
+
+### 8.7 Observations individuelles | 个体观察
 
 **Arthur**
 
@@ -701,18 +700,6 @@ Le graphique suivant présente la variation relative de surface entre les deux a
 
 **中文** — 部分区域缩小，但公共区域保持不变。
 
-**Helena**
-
-**FR** — Les zones intime et personnelle restent inchangées, tandis que les zones sociale et publique diminuent.
-
-**中文** — 亲密区和个人区保持不变，社交区和公共区缩小。
-
-**Mona**
-
-**FR** — Les variations sont très limitées ; la zone intime diminue légèrement.
-
-**中文** — 两次测量总体变化很小，亲密区略微缩小。
-
 **Ryhem**
 
 **FR** — Les dimensions calculées sont identiques entre les deux acquisitions.
@@ -725,11 +712,9 @@ Le graphique suivant présente la variation relative de surface entre les deux a
 
 **中文** — 不同区域的变化方向并不一致。第二次测量中个人区与社交区面积几乎相同，需要进一步检查区域几何形状和控制点顺序。
 
-**Zijie**
+**FR** — Les autres observations individuelles doivent être confirmées à partir des résultats calculés avant d'être interprétées.
 
-**FR** — Les zones intime et personnelle augmentent, tandis que les zones sociale et publique restent inchangées.
-
-**中文** — 亲密区和个人区扩大，社交区和公共区保持不变。
+**中文** — 其他参与者的个体变化需要根据计算结果进一步确认后再作解释。
 
 ---
 
@@ -739,17 +724,13 @@ Le graphique suivant présente la variation relative de surface entre les deux a
 
 **FR**
 
-Les résultats montrent une variabilité importante des dimensions choisies par les participants.
-
-La zone publique présente notamment des dimensions très différentes selon les individus.
+Les résultats suggèrent une variabilité des dimensions choisies par les participants.
 
 Cela souligne l'intérêt d'une interface permettant à chacun de personnaliser son espace.
 
 **中文**
 
-实验结果显示，参与者选择的个人空间尺寸具有较大差异。
-
-其中公共区域的个体差异尤其明显。
+实验结果显示，参与者选择的个人空间尺寸存在个体差异。
 
 这说明允许用户自行定义空间边界具有研究价值，而不是直接采用统一的固定尺寸。
 
@@ -803,9 +784,9 @@ Plusieurs limites doivent être prises en compte :
 
 Cette première phase expérimentale permet de tirer trois observations principales.
 
-**Premièrement**, les participants parviennent à définir quatre espaces de proximité distincts à l'aide de l'interface immersive.
+**Premièrement**, les participants peuvent définir quatre espaces de proximité distincts à l'aide de l'interface immersive.
 
-**Deuxièmement**, les dimensions des zones présentent des différences importantes entre les participants. Cette variabilité justifie l'intérêt d'une représentation personnalisable.
+**Deuxièmement**, les dimensions des zones présentent des différences entre les participants. Cette variabilité justifie l'intérêt d'une représentation personnalisable.
 
 **Troisièmement**, les modifications entre deux acquisitions sont hétérogènes : certaines zones restent stables, tandis que d'autres évoluent.
 
@@ -819,7 +800,7 @@ Elles constituent néanmoins une base quantitative pour poursuivre les expérime
 
 **第一**，参与者能够使用沉浸式界面定义四个不同层级的个人空间区域。
 
-**第二**，不同参与者的空间尺寸存在明显的个体差异。这支持项目采用可个性化调整的空间表示方式。
+**第二**，不同参与者的空间尺寸存在个体差异。这支持项目采用可个性化调整的空间表示方式。
 
 **第三**，两次测量之间的变化具有个体差异：部分区域保持稳定，部分区域发生变化。
 
@@ -842,7 +823,7 @@ Python 脚本用于批量处理 CSV 文件、计算区域尺寸并生成可视�
 ### Installation | 安装依赖
 
 ```powershell
-python -m pip install pandas matplotlib
+python -m pip install numpy matplotlib
 ```
 
 ### Analyse géométrique | 几何分析
@@ -869,11 +850,12 @@ Reports/
 |-- figures/
     |-- radius_by_participant.png
     |-- area_change.png
+    |-- mean_area_by_zone.png
 ```
 
-**FR** — Les images présentées dans ce README apparaissent après leur génération et leur ajout au dépôt Git.
+**FR** — Les images sont intégrées au README à l'aide de chemins relatifs GitHub. Elles doivent être présentes dans le dépôt pour être affichées.
 
-**中文** — 生成图片并提交到 Git 仓库后，README 中的图表链接才能正常显示。
+**中文** — README 使用 GitHub 相对路径嵌入图片，必须先将三张 PNG 提交到仓库，才能正常显示。
 
 ---
 
@@ -1019,9 +1001,7 @@ Les prochaines étapes comprennent :
 
 ## 15. Gestion des versions | 版本管理
 
-### Version 1.0
-
-**Novembre 2026**
+### Version 1.0 — Novembre 2026
 
 **FR**
 
@@ -1077,7 +1057,7 @@ Les résultats présentés dans ce dépôt sont exploratoires et ne doivent pas 
 | Confirmation visuelle dans le casque / 头显保存反馈 | Fonctionnelle / 已实现 |
 | Analyse Python / Python 数据分析 | Fonctionnelle / 已实现 |
 | Analyse de 16 fichiers CSV / 16 份 CSV 分析 | Terminée / 已完成 |
-| Visualisation statistique / 统计可视化 | En cours de finalisation / 正在完善 |
+| Visualisation statistique / 统计可视化 | Trois figures générées / 三张图已生成 |
 | Build Windows / Windows EXE | Disponible / 已提供 |
 | Synchronisation entre deux casques / 双头显同步 | Développement futur / 后续开发 |
 
