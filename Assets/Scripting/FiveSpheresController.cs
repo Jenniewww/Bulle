@@ -6,12 +6,19 @@ public class FiveSpheresController : MonoBehaviour
 {
     [Header("References")]
     public Transform head;
-    public Transform[] spheres = new Transform[5];
+
+    // 四层五球，共20个现有控制球
+    public Transform[] spheres = new Transform[20];
 
     [Header("XR Controllers")]
     public Transform leftController;
     public Transform rightController;
 
+    [Header("Ray Visual References")]
+    public ControllerRayVisual leftRayVisual;
+    public ControllerRayVisual rightRayVisual;
+
+    [Header("Grip Input")]
     public InputActionProperty leftGrip;
     public InputActionProperty rightGrip;
 
@@ -59,35 +66,37 @@ public class FiveSpheresController : MonoBehaviour
     void EnableEmbeddedAction(InputActionProperty property)
     {
         if (property.reference == null)
-        {
             property.action?.Enable();
-        }
     }
 
     void Start()
     {
-        localPositions = new Vector3[spheres.Length];
-
-        for (int i = 0; i < spheres.Length; i++)
+        // 保留原版五球布局初始化
+        // 20球模式不重新设置位置
+        if (spheres != null && spheres.Length == 5)
         {
-            if (spheres[i] == null)
-                continue;
+            localPositions = new Vector3[spheres.Length];
 
-            float angle = i < angles.Length
-                ? angles[i] * Mathf.Deg2Rad
-                : 0f;
+            for (int i = 0; i < spheres.Length; i++)
+            {
+                if (spheres[i] == null)
+                    continue;
 
-            localPositions[i] = new Vector3(
-                Mathf.Sin(angle) * radius,
-                0f,
-                Mathf.Cos(angle) * radius
-            );
+                float angle = i < angles.Length
+                    ? angles[i] * Mathf.Deg2Rad
+                    : 0f;
 
-            spheres[i].localPosition =
-                localPositions[i];
+                localPositions[i] = new Vector3(
+                    Mathf.Sin(angle) * radius,
+                    0f,
+                    Mathf.Cos(angle) * radius
+                );
 
-            spheres[i].localScale =
-                Vector3.one * sphereDiameter;
+                spheres[i].localPosition = localPositions[i];
+
+                spheres[i].localScale =
+                    Vector3.one * sphereDiameter;
+            }
         }
 
         PrintActionInfo("LEFT", leftGrip.action);
@@ -96,12 +105,10 @@ public class FiveSpheresController : MonoBehaviour
 
     void Update()
     {
-        DiagnoseGripPress("LEFT", leftGrip.action);
-        DiagnoseGripPress("RIGHT", rightGrip.action);
-
         HandleGrab(
             "LEFT",
             leftController,
+            leftRayVisual,
             leftGrip.action,
             leftGrab
         );
@@ -109,6 +116,7 @@ public class FiveSpheresController : MonoBehaviour
         HandleGrab(
             "RIGHT",
             rightController,
+            rightRayVisual,
             rightGrip.action,
             rightGrab
         );
@@ -121,11 +129,8 @@ public class FiveSpheresController : MonoBehaviour
 
         if (followUser)
         {
-            // Use the headset's WORLD position.
             Vector3 headWorldPosition = head.position;
 
-            // Follow horizontally and vertically.
-            // Place the sphere controller below the head.
             Vector3 targetWorldPosition = new Vector3(
                 headWorldPosition.x,
                 headWorldPosition.y - heightBelowHead,
@@ -135,7 +140,11 @@ public class FiveSpheresController : MonoBehaviour
             transform.position = targetWorldPosition;
         }
 
-        // Preserve manually dragged positions.
+        // 保留原版五球位置恢复逻辑
+        if (spheres == null || spheres.Length != 5 ||
+            localPositions == null)
+            return;
+
         for (int i = 0; i < spheres.Length; i++)
         {
             if (spheres[i] == null)
@@ -145,14 +154,14 @@ public class FiveSpheresController : MonoBehaviour
                 rightGrab.selected == i)
                 continue;
 
-            spheres[i].localPosition =
-                localPositions[i];
+            spheres[i].localPosition = localPositions[i];
         }
     }
 
     void HandleGrab(
         string side,
         Transform controller,
+        ControllerRayVisual rayVisual,
         InputAction grip,
         GrabState state)
     {
@@ -161,21 +170,17 @@ public class FiveSpheresController : MonoBehaviour
             !grip.enabled)
             return;
 
-        Ray ray = new Ray(
-            controller.position,
-            controller.forward
-        );
+        // 与实际显示射线完全一致
+        Ray ray = rayVisual != null
+            ? rayVisual.GetRay()
+            : new Ray(controller.position, controller.forward);
 
         if (grip.WasPressedThisFrame())
         {
             int index = FindSphereAlongRay(ray);
 
             if (debugGrip)
-            {
-                Debug.Log(
-                    "[" + side + "] Selected: " + index
-                );
-            }
+                Debug.Log("[" + side + "] Selected: " + index);
 
             if (index < 0)
                 return;
@@ -186,8 +191,7 @@ public class FiveSpheresController : MonoBehaviour
 
             state.selected = index;
 
-            Vector3 sphereWorld =
-                spheres[index].position;
+            Vector3 sphereWorld = spheres[index].position;
 
             state.depth = Vector3.Dot(
                 sphereWorld - ray.origin,
@@ -195,31 +199,25 @@ public class FiveSpheresController : MonoBehaviour
             );
 
             state.offset =
-                sphereWorld -
-                ray.GetPoint(state.depth);
+                sphereWorld - ray.GetPoint(state.depth);
         }
 
-        if (grip.IsPressed() &&
-            state.selected >= 0)
+        if (grip.IsPressed() && state.selected >= 0)
         {
             int index = state.selected;
 
             Vector3 targetWorld =
-                ray.GetPoint(state.depth) +
-                state.offset;
+                ray.GetPoint(state.depth) + state.offset;
 
-            Vector3 targetLocal =
-                transform.InverseTransformPoint(
-                    targetWorld
-                );
+            spheres[index].position = targetWorld;
 
-            // Keep points on the horizontal plane.
-            targetLocal.y = localPositions[index].y;
-
-            localPositions[index] = targetLocal;
-
-            spheres[index].localPosition =
-                targetLocal;
+            // 同步原五球模式的位置缓存
+            if (localPositions != null &&
+                index < localPositions.Length)
+            {
+                localPositions[index] =
+                    transform.InverseTransformPoint(targetWorld);
+            }
         }
 
         if (grip.WasReleasedThisFrame())
@@ -233,6 +231,9 @@ public class FiveSpheresController : MonoBehaviour
         int closest = -1;
         float bestDistance = selectionRadius;
 
+        if (spheres == null)
+            return -1;
+
         for (int i = 0; i < spheres.Length; i++)
         {
             if (spheres[i] == null)
@@ -242,26 +243,22 @@ public class FiveSpheresController : MonoBehaviour
                 rightGrab.selected == i)
                 continue;
 
-            Vector3 toSphere =
-                spheres[i].position - ray.origin;
+            Vector3 toSphere = spheres[i].position - ray.origin;
 
             float depth = Vector3.Dot(
                 toSphere,
                 ray.direction
             );
 
-            if (depth < 0 ||
-                depth > maxRayDistance)
+            if (depth < 0 || depth > maxRayDistance)
                 continue;
 
-            Vector3 projected =
-                ray.GetPoint(depth);
+            Vector3 projected = ray.GetPoint(depth);
 
-            float distance =
-                Vector3.Distance(
-                    projected,
-                    spheres[i].position
-                );
+            float distance = Vector3.Distance(
+                projected,
+                spheres[i].position
+            );
 
             if (distance < bestDistance)
             {
@@ -275,9 +272,7 @@ public class FiveSpheresController : MonoBehaviour
 
     void DiagnoseGripPress(string side, InputAction action)
     {
-        if (!debugGrip ||
-            action == null ||
-            !action.enabled)
+        if (!debugGrip || action == null || !action.enabled)
             return;
 
         if (action.WasPressedThisFrame())
@@ -294,17 +289,12 @@ public class FiveSpheresController : MonoBehaviour
 
         if (action == null)
         {
-            Debug.LogWarning(
-                "[" + side + "] ACTION IS NULL"
-            );
+            Debug.LogWarning("[" + side + "] ACTION IS NULL");
             return;
         }
 
-        Debug.Log(
-            "[" + side + "] Action: " +
-            action.name +
-            " | Enabled: " + action.enabled
-        );
+        Debug.Log("[" + side + "] Action: " +
+            action.name + " | Enabled: " + action.enabled);
     }
 
     [ContextMenu("Diagnose XR Grip")]
@@ -318,23 +308,14 @@ public class FiveSpheresController : MonoBehaviour
     {
         if (action == null)
         {
-            Debug.LogError(
-                "[" + side + "] Action is NULL"
-            );
+            Debug.LogError("[" + side + "] Action is NULL");
             return;
         }
 
-        Debug.Log(
-            "[" + side + "] Enabled: " + action.enabled
-        );
+        Debug.Log("[" + side + "] Enabled: " + action.enabled);
 
         foreach (var control in action.controls)
-        {
-            Debug.Log(
-                "[" + side + "] Control: " +
-                control.path
-            );
-        }
+            Debug.Log("[" + side + "] Control: " + control.path);
     }
 
     void OnDisable()

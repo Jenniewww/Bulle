@@ -1,199 +1,84 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(MeshFilter))]
 public class BulleDeformer : MonoBehaviour
 {
-    [Header("Control Points")]
-    [Range(10, 250)]
-    public int targetPointCount = 120;
-
-    public float pointSize = 1f;
-    public Color pointColor = Color.cyan;
-    public Color selectedColor = Color.yellow;
-
-    [Header("Smooth Deformation (meters)")]
-    [Min(0.01f)]
-    public float deformationRadius = 0.45f;
-
-    [Range(0.1f, 1f)]
-    public float deformationStrength = 0.8f;
+    [Header("20 Control Points")]
+    public Transform[] controlPoints = new Transform[20];
 
     [Header("XR Controllers")]
     public Transform leftController;
     public Transform rightController;
+
+    [Header("Grip Actions")]
     public InputActionProperty leftGrip;
     public InputActionProperty rightGrip;
 
-    [Header("Ray Selection (meters)")]
+    [Header("Grab Settings")]
     public float maxRayDistance = 5f;
-    public float selectionRadius = 0.12f;
+    public float selectionRadius = 0.14f;
 
-    private Mesh mesh;
-    private Vector3[] vertices;
-
-    private readonly List<Transform> points = new();
-    private readonly List<int> pointIndices = new();
-
-    private Material normalMaterial;
-    private Material selectedMaterial;
+    [Header("Debug")]
+    public bool debugGrip = true;
 
     private class GrabState
     {
-        public int selected = -1;
+        public Transform selected;
         public float depth;
         public Vector3 offset;
-        public Vector3 startPointWorld;
-        public Vector3[] originalVertices;
-        public Vector3[] originalWorldPositions;
     }
 
-    private readonly GrabState leftState = new();
-    private readonly GrabState rightState = new();
+    private GrabState leftGrab = new GrabState();
+    private GrabState rightGrab = new GrabState();
 
-    private bool visible = true;
-
-    void OnEnable()
+    private void OnValidate()
     {
-        leftGrip.action?.Enable();
-        rightGrip.action?.Enable();
+        if (controlPoints == null)
+            controlPoints = new Transform[20];
+
+        if (controlPoints.Length != 20)
+            System.Array.Resize(ref controlPoints, 20);
     }
 
-    void Start()
+    private void OnEnable()
     {
-        MeshFilter filter = GetComponent<MeshFilter>();
+        EnableEmbeddedAction(leftGrip);
+        EnableEmbeddedAction(rightGrip);
+    }
 
-        mesh = Instantiate(filter.sharedMesh);
-        mesh.name = "Bulle Runtime Mesh";
-        filter.mesh = mesh;
+    private void EnableEmbeddedAction(InputActionProperty property)
+    {
+        if (property.reference == null)
+            property.action?.Enable();
+    }
 
-        vertices = mesh.vertices;
+    private void Update()
+    {
+        HandleGrab(
+            "LEFT",
+            leftController,
+            leftGrip.action,
+            leftGrab
+        );
 
-        CreateMaterials();
-        CreatePoints();
-
-        Debug.Log(
-            $"Bulle ready: {vertices.Length} vertices, " +
-            $"{points.Count} control points"
+        HandleGrab(
+            "RIGHT",
+            rightController,
+            rightGrip.action,
+            rightGrab
         );
     }
 
-    void CreateMaterials()
-    {
-        Shader shader = Shader.Find(
-            "Universal Render Pipeline/Unlit"
-        );
-
-        normalMaterial = new Material(shader);
-        normalMaterial.color = pointColor;
-
-        selectedMaterial = new Material(shader);
-        selectedMaterial.color = selectedColor;
-    }
-
-    void CreatePoints()
-    {
-        // 空间均匀采样：优先选择距离已有点较远的顶点 répartition des points dans l'environnement au hasard
-        List<int> candidates = new();
-
-        // 限制候选数量，避免过多距离计算
-        int stride = Mathf.Max(1, vertices.Length / 3000);
-
-        for (int i = 0; i < vertices.Length; i += stride)
-            candidates.Add(i);
-
-        if (candidates.Count == 0)
-            return;
-
-        List<int> chosen = new();
-        float[] minDistances = new float[candidates.Count];
-
-        for (int i = 0; i < minDistances.Length; i++)
-            minDistances[i] = float.PositiveInfinity;
-
-        int current = 0;
-        int count = Mathf.Min(targetPointCount, candidates.Count);
-
-        for (int p = 0; p < count; p++)
-        {
-            int vertexIndex = candidates[current];
-            chosen.Add(vertexIndex);
-
-            Vector3 selectedPosition =
-                transform.TransformPoint(vertices[vertexIndex]);
-
-            float bestDistance = -1f;
-            int next = current;
-
-            for (int c = 0; c < candidates.Count; c++)
-            {
-                Vector3 candidatePosition =
-                    transform.TransformPoint(vertices[candidates[c]]);
-
-                float d = (
-                    candidatePosition - selectedPosition
-                ).sqrMagnitude;
-
-                minDistances[c] = Mathf.Min(
-                    minDistances[c], d
-                );
-
-                if (minDistances[c] > bestDistance)
-                {
-                    bestDistance = minDistances[c];
-                    next = c;
-                }
-            }
-
-            current = next;
-        }
-
-        GameObject template =
-            GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
-        template.SetActive(false);
-
-        foreach (int index in chosen)
-        {
-            GameObject obj = Instantiate(template, transform);
-
-            obj.name = "ControlPoint_" + index;
-            obj.transform.localPosition = vertices[index];
-            obj.transform.localRotation = Quaternion.identity;
-            obj.transform.localScale = Vector3.one * pointSize;
-
-            obj.GetComponent<Renderer>().sharedMaterial =
-                normalMaterial;
-
-            Collider collider = obj.GetComponent<Collider>();
-            if (collider != null)
-                Destroy(collider);
-
-            obj.SetActive(true);
-
-            points.Add(obj.transform);
-            pointIndices.Add(index);
-        }
-
-        Destroy(template);
-    }
-
-    void Update()
-    {
-        if (!visible) return;
-
-        HandleGrip(leftController, leftGrip.action, leftState);
-        HandleGrip(rightController, rightGrip.action, rightState);
-    }
-
-    void HandleGrip(
+    private void HandleGrab(
+        string side,
         Transform controller,
         InputAction grip,
         GrabState state)
     {
-        if (controller == null || grip == null)
+        if (controller == null ||
+            grip == null ||
+            !grip.enabled)
             return;
 
         Ray ray = new Ray(
@@ -201,75 +86,85 @@ public class BulleDeformer : MonoBehaviour
             controller.forward
         );
 
+        // Grip pressed
         if (grip.WasPressedThisFrame())
         {
-            int index = FindPointAlongRay(ray);
+            int index = FindControlPoint(ray);
 
-            if (index >= 0 &&
-                leftState.selected != index &&
-                rightState.selected != index)
-            {
-                state.selected = index;
+            if (debugGrip)
+                Debug.Log("[" + side + "] Selected: " + index);
 
-                Vector3 pointWorld = points[index].position;
+            if (index < 0)
+                return;
 
-                state.depth = Vector3.Dot(
-                    pointWorld - ray.origin,
-                    ray.direction
-                );
+            Transform point = controlPoints[index];
 
-                state.offset =
-                    pointWorld - ray.GetPoint(state.depth);
+            // Prevent both hands from grabbing the same point
+            if (leftGrab.selected == point ||
+                rightGrab.selected == point)
+                return;
 
-                state.startPointWorld = pointWorld;
+            state.selected = point;
 
-                // 保存抓取开始时的完整形状
-                state.originalVertices =
-                    (Vector3[])vertices.Clone();
+            Vector3 pointWorld = point.position;
 
-                state.originalWorldPositions =
-                    new Vector3[vertices.Length];
+            state.depth = Vector3.Dot(
+                pointWorld - ray.origin,
+                ray.direction
+            );
 
-                for (int i = 0; i < vertices.Length; i++)
-                {
-                    state.originalWorldPositions[i] =
-                        transform.TransformPoint(vertices[i]);
-                }
+            state.offset =
+                pointWorld - ray.GetPoint(state.depth);
 
-                SetPointColor(index, true);
-
-                Debug.Log("Grip selected: " + index);
-            }
+            if (debugGrip)
+                Debug.Log("[" + side + "] GRABBED: " + point.name);
         }
 
-        if (grip.IsPressed() && state.selected >= 0)
+        // Grip held
+        if (grip.IsPressed() && state.selected != null)
         {
-            Vector3 target =
+            Vector3 targetWorld =
                 ray.GetPoint(state.depth) + state.offset;
 
-            Deform(state, target);
+            state.selected.position = targetWorld;
         }
 
+        // Grip released
         if (grip.WasReleasedThisFrame())
         {
-            if (state.selected >= 0)
-                SetPointColor(state.selected, false);
+            if (debugGrip && state.selected != null)
+                Debug.Log("[" + side + "] RELEASED: " +
+                          state.selected.name);
 
-            state.selected = -1;
+            state.selected = null;
         }
     }
 
-    int FindPointAlongRay(Ray ray)
+    private int FindControlPoint(Ray ray)
     {
         int closest = -1;
         float bestDistance = selectionRadius;
 
-        for (int i = 0; i < points.Count; i++)
+        if (controlPoints == null)
+            return -1;
+
+        for (int i = 0; i < controlPoints.Length; i++)
         {
-            Vector3 toPoint = points[i].position - ray.origin;
+            Transform point = controlPoints[i];
+
+            if (point == null ||
+                !point.gameObject.activeInHierarchy)
+                continue;
+
+            if (leftGrab.selected == point ||
+                rightGrab.selected == point)
+                continue;
+
+            Vector3 toPoint = point.position - ray.origin;
 
             float depth = Vector3.Dot(
-                toPoint, ray.direction
+                toPoint,
+                ray.direction
             );
 
             if (depth < 0 || depth > maxRayDistance)
@@ -278,7 +173,8 @@ public class BulleDeformer : MonoBehaviour
             Vector3 projected = ray.GetPoint(depth);
 
             float distance = Vector3.Distance(
-                projected, points[i].position
+                projected,
+                point.position
             );
 
             if (distance < bestDistance)
@@ -291,98 +187,54 @@ public class BulleDeformer : MonoBehaviour
         return closest;
     }
 
-    void Deform(GrabState state, Vector3 targetWorld)
+    // Compatibility method for BulleVisibility.cs
+    public void SetBulleVisible(bool visible)
     {
-        Vector3 displacement =
-            targetWorld - state.startPointWorld;
-
-        Vector3 localDisplacement =
-            transform.InverseTransformVector(displacement);
-
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            float distance = Vector3.Distance(
-                state.originalWorldPositions[i],
-                state.startPointWorld
-            );
-
-            if (distance >= deformationRadius)
-            {
-                vertices[i] = state.originalVertices[i];
-                continue;
-            }
-
-            float t = Mathf.Clamp01(
-                distance / deformationRadius
-            );
-
-            // Smoothstep falloff
-            float weight =
-                1f - t * t * (3f - 2f * t);
-
-            vertices[i] =
-                state.originalVertices[i] +
-                localDisplacement *
-                weight *
-                deformationStrength;
-        }
-
-        mesh.vertices = vertices;
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-
-        for (int i = 0; i < points.Count; i++)
-        {
-            points[i].localPosition =
-                vertices[pointIndices[i]];
-        }
-    }
-
-    void SetPointColor(int index, bool selected)
-    {
-        if (index < 0 || index >= points.Count)
-            return;
-
-        points[index].GetComponent<Renderer>().sharedMaterial =
-            selected ? selectedMaterial : normalMaterial;
-    }
-
-    public void SetBulleVisible(bool show)
-    {
-        visible = show;
-
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-
-        if (renderer != null)
-            renderer.enabled = show;
-
-        foreach (Transform point in points)
+        foreach (Transform point in controlPoints)
         {
             if (point != null)
-                point.gameObject.SetActive(show);
+                point.gameObject.SetActive(visible);
         }
+    }
 
-        if (!show)
+    [ContextMenu("Diagnose XR Grip")]
+    public void DiagnoseXRGrip()
+    {
+        DiagnoseAction("LEFT", leftGrip.action);
+        DiagnoseAction("RIGHT", rightGrip.action);
+    }
+
+    private void DiagnoseAction(string side, InputAction action)
+    {
+        if (action == null)
         {
-            leftState.selected = -1;
-            rightState.selected = -1;
+            Debug.LogError("[" + side + "] Grip Action is NULL");
+            return;
+        }
+
+        Debug.Log(
+            "[" + side + "] Action: " +
+            action.name +
+            " | Enabled: " + action.enabled
+        );
+
+        foreach (var control in action.controls)
+        {
+            Debug.Log(
+                "[" + side + "] Binding: " + control.path
+            );
         }
     }
 
-    public bool IsBulleVisible()
+    private void OnDisable()
     {
-        return visible;
-    }
+        leftGrab.selected = null;
+        rightGrab.selected = null;
 
-    void OnDestroy()
-    {
-        if (normalMaterial != null)
-            Destroy(normalMaterial);
+        if (leftGrip.reference == null)
+            leftGrip.action?.Disable();
 
-        if (selectedMaterial != null)
-            Destroy(selectedMaterial);
-
-        if (mesh != null)
-            Destroy(mesh);
+        if (rightGrip.reference == null)
+            rightGrip.action?.Disable();
     }
 }

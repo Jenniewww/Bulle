@@ -278,6 +278,7 @@ MonoBehaviour:
     target: {fileID: 394096633129797710}
   - label: Pu5
     target: {fileID: 394096633129797709}
+  requireExactly20Points: 1
 --- !u!4 &190509961
 Transform:
   m_ObjectHideFlags: 0
@@ -676,7 +677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &806116705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,10 +909,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerRayVisual
   rayLength: 5
-  rayWidth: 0.008
-  rayColor: {r: 0, g: 1, b: 1, a: 1}
-  useNegativeZ: 0
-  directionOffset: {x: 0, y: 0, z: 0}
+  startWidth: 0.008
+  endWidth: 0.008
+  directionAxis: 1
+  controller: {fileID: 0}
 --- !u!120 &937736132
 LineRenderer:
   serializedVersion: 3
@@ -1027,6 +1028,80 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5291163539664733357, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
   m_PrefabInstance: {fileID: 394096633129797708}
   m_PrefabAsset: {fileID: 0}
+--- !u!33 &1162262136
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162262128}
+  m_Mesh: {fileID: 0}
+--- !u!114 &1162262137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162262128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ddd1d7f27b8514b835f44c3446e92d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulleDeformer
+  targetPointCount: 54
+  pointSize: 1
+  pointColor: {r: 0, g: 1, b: 1, a: 1}
+  selectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  deformationRadius: 0.45
+  deformationStrength: 0.8
+  leftController: {fileID: 937736129}
+  rightController: {fileID: 1207715618}
+  leftRayVisual: {fileID: 937736131}
+  rightRayVisual: {fileID: 1207715620}
+  leftGrip:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Left Grip
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 25c6d3a1-18e0-426d-9ab9-05923fea4139
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 86a6a4d1-b276-4f5a-8308-55492ec004df
+        m_Path: <XRController>{LeftHand}/{GripButton}
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Left Grip
+        m_Flags: 0
+      m_Flags: 0
+      m_Priority: 0
+    m_Reference: {fileID: 0}
+  rightGrip:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Right Grip
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4cf60489-d666-4460-81f6-781ea25f2f88
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: b3125416-f8ea-41dc-9a3e-6733c398b9f9
+        m_Path: <XRController>{RightHand}/{GripButton}
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Right Grip
+        m_Flags: 0
+      m_Flags: 0
+      m_Priority: 0
+    m_Reference: {fileID: 0}
+  maxRayDistance: 5
+  selectionRadius: 0.12
 --- !u!1 &1207715617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,10 +1240,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerRayVisual
   rayLength: 5
-  rayWidth: 0.008
-  rayColor: {r: 0, g: 1, b: 1, a: 1}
-  useNegativeZ: 0
-  directionOffset: {x: 0, y: 0, z: 0}
+  startWidth: 0.008
+  endWidth: 0.008
+  directionAxis: 1
+  controller: {fileID: 0}
 --- !u!120 &1207715621
 LineRenderer:
   serializedVersion: 3
@@ -1507,6 +1582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1631122266}
   - component: {fileID: 1631122267}
+  - component: {fileID: 1631122268}
   m_Layer: 0
   m_Name: Acquisition
   m_TagString: Untagged
@@ -1543,6 +1619,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerAcquisition
   coordinateManager: {fileID: 190509960}
+--- !u!114 &1631122268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631122265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a0c3d132335d242b47a31b5d146874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AcquisitionFeedbackUI
+  coordinateManager: {fileID: 190509960}
+  xrHead: {fileID: 1951776298}
+  durationSeconds: 2.5
+  offsetFromHead: {x: 0, y: -0.18, z: 1.05}
 --- !u!1 &1732425774
 GameObject:
   m_ObjectHideFlags: 0
@@ -2005,7 +2097,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5291163539664733357, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1162262136}
+    - targetCorrespondingSourceObject: {fileID: 5291163539664733357, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1162262137}
   m_SourcePrefab: {fileID: 100100000, guid: 6c992bcba6f35fc4f80d833c6e007048, type: 3}
 --- !u!4 &394096633129797709 stripped
 Transform:

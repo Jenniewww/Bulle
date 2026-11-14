@@ -3,9 +3,15 @@ from pathlib import Path
 import csv
 import math
 import re
+import sys
 
-import pandas as pd
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+    import numpy as np
+except (ImportError, ValueError) as exc:
+    print("Matplotlib / NumPy environment error:", exc)
+    print("Try: conda install -c defaults matplotlib numpy")
+    sys.exit(1)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "Data"
@@ -13,133 +19,321 @@ OUT = ROOT / "Reports" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
 ZONES = ["Intime", "Personnelle", "Sociale", "Publique"]
+COLORS = ["#E76F51", "#E9C46A", "#2A9D8F", "#457B9D"]
+
+# Handles filenames such as:
+# Arthur1_Coordonnees_2026-10-30.csv
+# Arthur2_Coordonnees_2026-10-30.csv
+NAME_PATTERN = re.compile(
+    r"^(.+?)([12])_Coordonnees_.*\.csv$",
+    re.IGNORECASE
+)
+
+
+def read_coordinates(path):
+    # utf-8-sig removes one BOM; lstrip handles repeated BOMs
+    with path.open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as file:
+        reader = csv.DictReader(file, delimiter=";")
+
+        if reader.fieldnames is None:
+            raise ValueError("Empty CSV")
+
+        reader.fieldnames = [
+            name.lstrip("\ufeff").strip()
+            for name in reader.fieldnames
+        ]
+
+        rows = list(reader)
+
+    if len(rows) != 20:
+        raise ValueError(
+            f"Expected 20 points, got {len(rows)}"
+        )
+
+    rows.sort(key=lambda row: int(row["Index"]))
+
+    indices = [int(row["Index"]) for row in rows]
+
+    if indices != list(range(20)):
+        raise ValueError(
+            "Indices must be 0 through 19"
+        )
+
+    return [
+        (float(row["X"]), float(row["Z"]))
+        for row in rows
+    ]
 
 
 def polygon_area(points):
-    """Shoelace formula on horizontal XZ plane."""
-    area = 0.0
+    total = 0.0
     for i in range(len(points)):
         x1, z1 = points[i]
         x2, z2 = points[(i + 1) % len(points)]
-        area += x1 * z2 - x2 * z1
-    return abs(area) / 2
+        total += x1 * z2 - x2 * z1
+
+    return abs(total) / 2.0
 
 
-def read_csv(path):
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f, delimiter=";")
-        rows = list(reader)
+def analyze():
+    records = []
 
-    required = {"Index", "X", "Z"}
-    if not rows or not required.issubset(rows[0]):
-        raise ValueError("Missing Index, X or Z column")
+    if not DATA.exists():
+        raise FileNotFoundError(
+            f"Data folder not found: {DATA}"
+        )
 
-    rows.sort(key=lambda r: int(r["Index"]))
+    for path in sorted(DATA.glob("*.csv")):
+        match = NAME_PATTERN.match(path.name)
 
-    if len(rows) != 20:
-        raise ValueError(f"Expected 20 points, found {len(rows)}")
+        if not match:
+            print("Skipping filename:", path.name)
+            continue
 
-    return rows
+        participant = match.group(1)
+        trial = int(match.group(2))
+
+        try:
+            points = read_coordinates(path)
+
+            for zone_index, zone in enumerate(ZONES):
+                start = zone_index * 5
+                group = points[start:start + 5]
+
+                area = polygon_area(group)
+                radius = math.sqrt(area / math.pi)
+
+                records.append({
+                    "participant": participant,
+                    "trial": trial,
+                    "zone": zone,
+                    "area": area,
+                    "radius": radius,
+                })
+
+            print("Loaded:", path.name)
+
+        except (ValueError, KeyError) as exc:
+            print("ERROR:", path.name, exc)
+
+    return records
 
 
-records = []
+def get_value(records, participant, trial, zone, key):
+    matches = [
+        row[key] for row in records
+        if row["participant"] == participant
+        and row["trial"] == trial
+        and row["zone"] == zone
+    ]
 
-for path in sorted(DATA.glob("*.csv")):
-    # Example: Arthur1_Coordonnees_2026-10-30_...
-    match = re.match(r"(.+?)([12])_Coordonnees_", path.name)
-    if not match:
-        print("Skipped filename:", path.name)
-        continue
+    return matches[0] if matches else float("nan")
 
-    person, trial = match.group(1), int(match.group(2))
 
-    try:
-        rows = read_csv(path)
+def plot_radius(records, participants):
+    fig, ax = plt.subplots(figsize=(13, 7))
 
-        for i, zone in enumerate(ZONES):
-            group = rows[i * 5:(i + 1) * 5]
-            points = [
-                (float(r["X"]), float(r["Z"]))
-                for r in group
+    x = np.arange(len(participants))
+    width = 0.19
+
+    for j, zone in enumerate(ZONES):
+        values = [
+            get_value(records, p, 1, zone, "radius")
+            for p in participants
+        ]
+
+        ax.bar(
+            x + (j - 1.5) * width,
+            values,
+            width,
+            label=zone,
+            color=COLORS[j]
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(participants, rotation=25)
+    ax.set_ylabel("Equivalent radius (m)")
+    ax.set_title(
+        "Personal Space by Participant - First Acquisition"
+    )
+    ax.legend()
+    ax.grid(axis="y", alpha=0.2)
+    ax.set_axisbelow(True)
+
+    fig.tight_layout()
+    fig.savefig(
+        OUT / "radius_by_participant.png",
+        dpi=200
+    )
+    plt.close(fig)
+
+
+def plot_changes(records, participants):
+    fig, ax = plt.subplots(figsize=(13, 7))
+
+    x = np.arange(len(participants))
+    width = 0.19
+
+    for j, zone in enumerate(ZONES):
+        changes = []
+
+        for participant in participants:
+            before = get_value(
+                records, participant, 1, zone, "area"
+            )
+            after = get_value(
+                records, participant, 2, zone, "area"
+            )
+
+            if (
+                not math.isfinite(before)
+                or not math.isfinite(after)
+                or before <= 0
+            ):
+                changes.append(float("nan"))
+            else:
+                changes.append(
+                    (after - before) / before * 100
+                )
+
+        ax.bar(
+            x + (j - 1.5) * width,
+            changes,
+            width,
+            label=zone,
+            color=COLORS[j]
+        )
+
+    ax.axhline(0, color="black", linewidth=1)
+    ax.set_xticks(x)
+    ax.set_xticklabels(participants, rotation=25)
+    ax.set_ylabel("Area change (%)")
+    ax.set_title(
+        "Changes in Personal Space - Acquisition 1 vs 2"
+    )
+    ax.legend()
+    ax.grid(axis="y", alpha=0.2)
+    ax.set_axisbelow(True)
+
+    fig.tight_layout()
+    fig.savefig(
+        OUT / "area_change.png",
+        dpi=200
+    )
+    plt.close(fig)
+
+
+def plot_average_areas(records):
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    x = np.arange(len(ZONES))
+    width = 0.34
+
+    for trial, shift, color in [
+        (1, -width / 2, "#457B9D"),
+        (2, width / 2, "#E76F51"),
+    ]:
+        means = []
+
+        for zone in ZONES:
+            values = [
+                r["area"] for r in records
+                if r["trial"] == trial
+                and r["zone"] == zone
             ]
 
-            area = polygon_area(points)
-            radius = math.sqrt(area / math.pi)
+            means.append(
+                sum(values) / len(values)
+                if values else float("nan")
+            )
 
-            records.append({
-                "Participant": person,
-                "Trial": trial,
-                "Zone": zone,
-                "Area_m2": area,
-                "Radius_m": radius,
+        ax.bar(
+            x + shift,
+            means,
+            width,
+            label=f"Acquisition {trial}",
+            color=color
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(ZONES)
+    ax.set_ylabel("Mean polygon area (m²)")
+    ax.set_title(
+        "Mean Personal Space Area by Zone"
+    )
+    ax.legend()
+    ax.grid(axis="y", alpha=0.2)
+    ax.set_axisbelow(True)
+
+    fig.tight_layout()
+    fig.savefig(
+        OUT / "mean_area_by_zone.png",
+        dpi=200
+    )
+    plt.close(fig)
+
+
+def export_summary(records):
+    output = ROOT / "Reports" / "bulle_geometry_summary.csv"
+
+    with output.open(
+        "w", encoding="utf-8-sig", newline=""
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=[
+                "Participant",
+                "Trial",
+                "Zone",
+                "Area_m2",
+                "Radius_m"
+            ]
+        )
+        writer.writeheader()
+
+        for row in records:
+            writer.writerow({
+                "Participant": row["participant"],
+                "Trial": row["trial"],
+                "Zone": row["zone"],
+                "Area_m2": round(row["area"], 6),
+                "Radius_m": round(row["radius"], 6)
             })
 
-    except (ValueError, KeyError) as e:
-        print(f"Skipped {path.name}: {e}")
+    print("Saved:", output)
 
-df = pd.DataFrame(records)
 
-if df.empty:
-    raise SystemExit("No valid CSV files found")
+def main():
+    records = analyze()
 
-df.to_csv(
-    ROOT / "Reports" / "bulle_geometry_summary.csv",
-    index=False,
-    encoding="utf-8-sig"
-)
+    if not records:
+        print("No valid CSV files found.")
+        return
 
-# Figure 1: equivalent radius for each participant, trial 1
-first = df[df["Trial"] == 1]
+    participants = sorted({
+        r["participant"] for r in records
+    })
 
-pivot = first.pivot(
-    index="Participant",
-    columns="Zone",
-    values="Radius_m"
-).reindex(columns=ZONES)
+    print("\nParticipants:", participants)
+    print("Zone measurements:", len(records))
 
-ax = pivot.plot(kind="bar", figsize=(12, 6))
-ax.set_title("Equivalent radius by participant - Trial 1")
-ax.set_xlabel("Participant")
-ax.set_ylabel("Equivalent radius (m)")
-ax.legend(title="Zone")
-ax.grid(axis="y", alpha=0.25)
-plt.xticks(rotation=30, ha="right")
-plt.tight_layout()
-plt.savefig(OUT / "radius_by_participant.png", dpi=180)
-plt.close()
+    plot_radius(records, participants)
+    plot_changes(records, participants)
+    plot_average_areas(records)
+    export_summary(records)
 
-# Figure 2: percentage area change, trial 1 to trial 2
-paired = df.pivot_table(
-    index=["Participant", "Zone"],
-    columns="Trial",
-    values="Area_m2"
-)
+    print("\nVisualization complete!")
+    print("Figures saved in:", OUT)
 
-if 1 in paired.columns and 2 in paired.columns:
-    paired = paired.dropna(subset=[1, 2])
-    paired["Change_pct"] = (
-        (paired[2] - paired[1])
-        / paired[1].replace(0, float("nan"))
-        * 100
-    )
+    for name in [
+        "radius_by_participant.png",
+        "area_change.png",
+        "mean_area_by_zone.png"
+    ]:
+        print(" -", name)
 
-    changes = paired["Change_pct"].unstack("Zone")
-    changes = changes.reindex(columns=ZONES)
 
-    ax = changes.plot(kind="bar", figsize=(12, 6))
-    ax.axhline(0, color="black", linewidth=0.8)
-    ax.set_title("Area change between trials 1 and 2")
-    ax.set_xlabel("Participant")
-    ax.set_ylabel("Area change (%)")
-    ax.legend(title="Zone")
-    ax.grid(axis="y", alpha=0.25)
-    plt.xticks(rotation=30, ha="right")
-    plt.tight_layout()
-    plt.savefig(OUT / "area_change.png", dpi=180)
-    plt.close()
-
-print("\nMean equivalent radius, trial 1:")
-print(first.groupby("Zone")["Radius_m"].mean())
-
-print("\nFigures saved to:", OUT)
-print("Summary saved to: Reports/bulle_geometry_summary.csv")
+if __name__ == "__main__":
+    main()

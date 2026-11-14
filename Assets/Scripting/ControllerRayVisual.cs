@@ -5,69 +5,84 @@ using UnityEngine;
 public class ControllerRayVisual : MonoBehaviour
 {
     [Header("Ray Settings")]
-    public float rayLength = 5f;
-    public float rayWidth = 0.008f;
-    public Color rayColor = Color.cyan;
+    [SerializeField] private float rayLength = 5f;
+    [SerializeField] private float startWidth = 0.008f;
+    [SerializeField] private float endWidth = 0.008f;
 
     [Header("Direction")]
-    public bool useNegativeZ = false;
+    [SerializeField] private Axis directionAxis = Axis.Y;
 
-    [Tooltip("Additional local rotation of the ray, in degrees")]
-    public Vector3 directionOffset = Vector3.zero;
+    [Header("Controller")]
+    [SerializeField] private Transform controller;
 
-    private LineRenderer line;
-    private Material rayMaterial;
-
-    void Awake()
+    public enum Axis
     {
-        line = GetComponent<LineRenderer>();
+        X,
+        Y,
+        Z
+    }
 
-        line.positionCount = 2;
-        line.useWorldSpace = true;
+    private LineRenderer lineRenderer;
 
-        line.startWidth = rayWidth;
-        line.endWidth = rayWidth;
-        line.numCapVertices = 6;
+    private void Awake()
+    {
+        lineRenderer = GetComponent<LineRenderer>();
 
-        Shader shader = Shader.Find(
-            "Universal Render Pipeline/Unlit"
+        if (controller == null)
+            controller = transform;
+
+        lineRenderer.positionCount = 2;
+        lineRenderer.useWorldSpace = true;
+        lineRenderer.startWidth = startWidth;
+        lineRenderer.endWidth = endWidth;
+    }
+
+    private void Update()
+    {
+        if (controller == null || lineRenderer == null)
+            return;
+
+        Vector3 origin = controller.position;
+        Vector3 direction = GetRayDirection();
+
+        lineRenderer.SetPosition(0, origin);
+        lineRenderer.SetPosition(
+            1,
+            origin + direction * rayLength
         );
-
-        if (shader == null)
-        {
-            shader = Shader.Find("Sprites/Default");
-        }
-
-        rayMaterial = new Material(shader);
-        rayMaterial.color = rayColor;
-
-        line.material = rayMaterial;
     }
 
-    void LateUpdate()
+    public Vector3 GetRayDirection()
     {
-        Vector3 localDirection =
-            useNegativeZ ? Vector3.back : Vector3.forward;
+        if (controller == null)
+            return -transform.up;
 
-        Quaternion offsetRotation =
-            Quaternion.Euler(directionOffset);
+        Vector3 direction;
 
-        Vector3 direction =
-            transform.rotation *
-            (offsetRotation * localDirection);
+        switch (directionAxis)
+        {
+            case Axis.X:
+                direction = controller.right;
+                break;
 
-        Vector3 start = transform.position;
-        Vector3 end = start + direction * rayLength;
+            case Axis.Y:
+                direction = controller.up;
+                break;
 
-        line.SetPosition(0, start);
-        line.SetPosition(1, end);
+            default:
+                direction = controller.forward;
+                break;
+        }
+
+        // 强制反转方向
+        return -direction.normalized;
     }
 
-    void OnDestroy()
+    public Ray GetRay()
     {
-        if (rayMaterial != null)
-        {
-            Destroy(rayMaterial);
-        }
+        return new Ray(
+            controller.position,
+            GetRayDirection()
+        );
     }
 }
